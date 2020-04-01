@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<link rel="canonical" href="https://getbootstrap.com/docs/4.0/examples/starter-template/">
+
+
+
+<style type="text/css" id="dark-mode-custom-style"></style>
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="">
+  <meta name="author" content="">
+  <link rel="icon" href="https://getbootstrap.com/docs/4.0/assets/img/favicons/favicon.ico">
+
+  <title>I Blue It</title>
+
+  <link rel="stylesheet" href="libs/bootstrap-4.4.1-dist/css/bootstrap.min.css">
+  <script src="libs/jquery-3.4.1/jquery-3.4.1.min.js"></script>
+
+<body>
+
+  <nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top">
+
+    <a class="collapse navbar-collapse navbar-brand">I Blue It</a>
+
+    <a class="navbar-brand">Paciente:</a>
+
+    <div class="collapse navbar-collapse" id="navbarsExampleDefault">
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item active">
+          <a class="nav-link" href="#">
+            <select id="select_pacients" class="custom-select">
+              <option selected>Selecione um Paciente</option>
+            </select>
+        </li>
+      </ul>
+
+      <a class="navbar-brand">Tipo de Dados:</a>
+
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item active">
+          <a class="nav-link" href="#">
+            <select id="select_pageselect" class="custom-select">
+              <option selected>Selecione uma Visualização</option>
+              <option>Visualização</option>
+              <option value="DG">Dados Gerais</option>
+              <option value="Graf">Gráficos</option>
+              <option value="RF">Relatório Final</option>
+            </select>
+        </li>
+      </ul>
+
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item active">
+          <button id="btn_filtrar" type="button" class="btn btn-primary">Filtrar</button>
+        </li>
+      </ul>
+
+    </div>
+  </nav>
+
+
+  <main role="main" class="container">
+    <br>
+    <br>
+    <br>
+
+    <div class="starter-template">
+      <h1>I Blue It Analytics</h1>
+    </div>
+
+
+    <select id="select_calibracaoType" class="custom-select">
+      <option selected>Selecione uma Calibração</option>
+      <option value="RespiratoryFrequency">Frequência Respiratória</option>
+      <option value="InspiratoryPeak">Pico Inspiratório</option>
+      <option value="InspiratoryDuration">Duração Inspiração</option>
+      <option value="ExpiratoryPeak">Pico Expiratório</option>
+      <option value="ExpiratoryDuration">Duração Expiração</option>
+    </select>
+
+    <select id="select_minigameType" class="custom-select">
+      <option selected>Selecione um Minigame</option>
+      <option value="CakeGame">Velas no Bolo</option>
+      <option value="WaterGame">Copo D'Água</option>
+    </select>
+
+
+    <select id="select_plataformDate" class="custom-select">
+      <option selected>Data de Jogo</option>
+    </select>
+
+    <select id="dados_a" class="custom-select">
+      <option selected>Dados</option>
+    </select>
+
+
+  </main><!-- /.container -->
+
+
+
+
+</body>
+
+
+<script>
+  $(document).ready(function () {
+
+    $("#btn_filtrar").on('click', function () {
+
+      LimparRegistros();
+
+      var pacientId = $("#select_pacients").val();
+      var optTipoDados = $("#select_pageselect").val();
+
+      console.log("A página selecionada é: " + $(this).val());
+
+      switch (optTipoDados) {
+
+        case 'DG':
+          $("#select_calibracaoType").hide();
+          $("#select_minigameType").hide();
+          $("#select_plataformDate").hide();
+
+          /**/
+
+          var pacientId = $("#select_pacients").val();
+          $.ajax({
+            url: "https://blueapi.azurewebsites.net/api/pacients/" + pacientId + "/calibrations",
+            type: "GET",
+            dataType: "json",
+            headers: {
+              "GameToken": "QkxVRUFQSV9UT0tFTl9ESU9HTw=="
+            },
+            success: function (data) {
+              $.each(data, function (i, item) {
+                $('#dados_a').append($('<option>', {
+                  value: item.calibrationValue,
+                  text: item.calibrationValue
+                }));
+              });
+
+              console.log("Dados Recebidos");
+              console.log(data);
+            }
+
+          })
+
+          /**/
+
+          break;
+
+        case 'Graf':
+          $("#select_minigameType").hide();
+          break;
+
+        case 'RF':
+          $("#select_plataformDate").hide();
+          break;
+
+
+
+
+
+        default:
+          $("#select_calibracaoType").show();
+          $("#select_minigameType").show();
+          $("#select_plataformDate").show();
+          break;
+      }
+
+    });
+
+    $("#select_calibracaoType").change(function () {
+      console.log("A calibração selecionada é: " + $(this).val());
+      $.ajax({
+        url: "https://blueapi.azurewebsites.net/api/calibrations",
+        data: {
+          "pacientId": "5e7e4681ec40020e3cd70558",
+          "calibrationExercise": $(this).val()
+        },
+        type: "GET",
+        dataType: "json",
+        headers: {
+          "GameToken": "QkxVRUFQSV9UT0tFTl9ESU9HTw=="
+        },
+        success: function (data) {
+          console.log("Dados Recebidos");
+          console.log(data);
+        }
+      });
+    });
+
+    $("#select_minigameType").change(function () {
+      console.log("O minigame escolhido é: " + $(this).val());
+      $.ajax({
+        url: "https://blueapi.azurewebsites.net/api/minigames",
+        data: {
+          "pacientId": "5e7e4681ec40020e3cd70558",
+          "minigameName": $(this).val()
+        },
+        type: "GET",
+        dataType: "json",
+        headers: {
+          "GameToken": "QkxVRUFQSV9UT0tFTl9ESU9HTw=="
+        },
+        success: function (data) {
+          console.log("Dados Recebidos");
+          console.log(data);
+        }
+      });
+    });
+
+    $("#select_pacients").change(function () {
+      console.log("O paciente escolhido é: " + $(this).val());
+
+      console.log("Buscando informações da plataforma");
+      $("#select_plataformDate").prop("disabled", true);
+      $.ajax({
+        url: "https://blueapi.azurewebsites.net/api/plataforms",
+        data: {
+          "pacientId": $(this).val()
+        },
+        type: "GET",
+        dataType: "json",
+        headers: {
+          "GameToken": "QkxVRUFQSV9UT0tFTl9ESU9HTw=="
+        },
+        success: function (data) {
+          console.log("Dados Recebidos");
+          $.each(data, function (i, item) {
+            $('#select_plataformDate').append($('<option>', {
+              value: item._id,
+              text: item.playStart
+            }));
+          });
+          $("#select_plataformDate").prop("disabled", false);
+        }
+      });
+    });
+
+    console.log("Busca de pacientes inicializada");
+    $("#select_pacients").prop("disabled", true);
+    $("#select_plataformDate").prop("disabled", true);
+    $.ajax({
+      url: "https://blueapi.azurewebsites.net/api/pacients",
+      type: "GET",
+      dataType: "json",
+      headers: {
+        "GameToken": "QkxVRUFQSV9UT0tFTl9ESU9HTw=="
+      },
+      success: function (data) {
+        console.log("Lista de Pacientes Recebidos");
+        $.each(data, function (i, item) {
+          $('#select_pacients').append($('<option>', {
+            value: item._id,
+            text: item.name
+          }));
+        });
+        $("#select_pacients").prop("disabled", false);
+      }
+    });
+
+
+    function LimparRegistros() {
+      $('#dados_a').find('option').remove().end();
+    }
+
+  });
+
+
+
+</script>
+
+</html>
