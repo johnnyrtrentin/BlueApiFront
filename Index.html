@@ -107,6 +107,9 @@
 
     </ul>
 
+    <figure class="highcharts-figure"> <!-- utilizado para apresentação dos gráficos -->
+      <div id="containerHC"></div>
+    </figure>
 
   </main><!-- /.container -->
 
@@ -431,29 +434,75 @@
 
   });
 
+
 //****************              GRÁFICOS:                  ****************************************************
-function highchartgrafpontuacao(){
-console.log("apresentanod gráficos de pontuação pelo tempo");
+function highchartgrafpontuacao(){    //++++++++++++++++++++++++++++++++++               1
+console.log("apresentando gráficos de pontuação pelo tempo");
 
-};function highchartgrafpicoexp(){
-console.log("apresentanod gráficos de Pico Expiratório pelo tempo");
+};function highchartgrafpicoexp(){    //++++++++++++++++++++++++++++++++++               2
+console.log("apresentando gráficos de Pico Expiratório pelo tempo");
 
-};function highchartgrafpicoins(){
-console.log("apresentanod gráficos de Pico Inspiratório pelo tempo");
+ /*var Highcharts;
+  Highcharts.chart('containerHC', {
 
-};function highchartgraffreqresp(){
-console.log("apresentanod gráficos de Frequência Respiratória pelo tempo");
+chart: {
+    type: 'lollipop'
+},
 
-};function highchartgrafeficiencia(){
-console.log("apresentanod gráficos de Eficiência nas sessão ou sessões escolhidas");
+legend: {
+    enabled: false
+},
 
-};function highchartgraffluxo(){
-console.log("apresentanod gráficos de fluxo pelo tempo na fase escolhida");
+subtitle: {
+    text: 'João 123'
+},
+
+title: {
+    text: 'Pico Expiratório por Sessão'
+},
+
+tooltip: {
+    shared: true
+},
+
+xAxis: {
+    title: {
+        text: 'sessão'
+    },
+    type: 'category'
+},
+
+yAxis: {
+    title: {
+        text: 'Pico expiratório (L/min)'
+    }
+},
+
+series: [{
+    name: 'Pico expiratório',
+    data: [{name: '1ª',
+            low: 150
+    }, {    name: '2ª',
+            low: 172
+    }, {    name: '3ª',
+            low: 210},] 
+}]
+});
+  */
+};function highchartgrafpicoins(){      //++++++++++++++++++++++++++++++++++               3
+console.log("apresentando gráficos de Pico Inspiratório pelo tempo");
+
+};function highchartgraffreqresp(){      //++++++++++++++++++++++++++++++++++               4
+console.log("apresentando gráficos de Frequência Respiratória pelo tempo");
+
+};function highchartgrafeficiencia(){    //++++++++++++++++++++++++++++++++++               5
+console.log("apresentando gráficos de Eficiência nas sessão ou sessões escolhidas");
+
+};function highchartgraffluxo(){        //++++++++++++++++++++++++++++++++++               6
+console.log("apresentando gráficos de fluxo pelo tempo na fase escolhida");
 
 };
 
-
-    
 
 </script>
 
