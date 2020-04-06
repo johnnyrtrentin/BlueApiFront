@@ -38,14 +38,13 @@
         </li>
       </ul>
 
-      <a class="navbar-brand">Tipo de Dados:</a>
+      <a class="navbar-brand">Visualizar:</a>
 
       <ul class="navbar-nav mr-auto">
         <li class="nav-item active">
           <a class="nav-link" href="#">
             <select id="select_pageselect" class="custom-select">
               <option selected>Selecione uma Visualização</option>
-              <option>Visualização</option>
               <option value="DG">Dados Gerais</option>
               <option value="Graf">Gráficos</option>
               <option value="RF">Relatório Final</option>
@@ -93,7 +92,18 @@
       <option selected>Data de Jogo</option>
     </select>
 
-    <ul id="dados_a">
+    <select id="select_charttype" class="custom-select">
+      <option selected>Selecione o Tipo de gráfico desejado</option>
+      <option value="pontuacao">Pontuação por fase e nivel</option>
+      <option value="picoexp">Pico expiratório pelo tempo</option>
+      <option value="picoins">Pico inspiratório pelo tempo</option>
+      <option value="freqresp">Frequência respiratória pelo tempo</option>
+      <option value="eficiencia">Eficiência por fase e nivel</option>
+      <option value="fluxo">Fluxo respiratória de uma fase</option>
+    </select>
+    
+
+    <ul id="dados_a"> <!-- utilizado para apresentação de dados -->
 
     </ul>
 
@@ -234,15 +244,70 @@
 
 
 
+ //*****INICIO Página de dados gerais
     function PaginadeDadosGerais(){
-          $("#select_calibracaoType").hide();
+          $("#select_calibracaoType").hide(); //esconde barras de seleção iniciais (será retirado quando houver uma pagina de entrada definida)
           $("#select_minigameType").hide();
           $("#select_plataformDate").hide();
 
       console.log("Entrada na função de visualização de dados gerais bem sucedida");
-      
-      var pacientId = $("#select_pacients").val();
-      var Pacientname= toString($('select_pacients').text());
+
+      var pacientId = $("#select_pacients").val();  // pega ID do paciente selecionado no OnClick
+
+      //-------------inicio apresentação dados gerais do paciente
+      $.ajax({
+            url: "https://blueapi.azurewebsites.net/api/pacients/" + pacientId,
+            type: "GET",
+            dataType: "json",
+            headers: {
+              "GameToken": "QkxVRUFQSV9UT0tFTl9ESU9HTw=="
+            },
+            success: function (data) { 
+              var nome = data.name;
+              var idade = new Date(); //- data.getFullYear();
+              var sexo = data.sex;
+              if (sexo='Male'){
+                sexo = 'Masculino';
+              }else{
+                sexo='Feminino';
+              }
+              var OBS = data.observations;
+              var condicao = data.condition;
+              var levelsdesbloqueados = data.unlockedLevels;
+              var sessoesjogadas= data.playSessionsDone;
+              calibracoesfeitas = [null , null, null];
+              if (data.calibrationPitacoDone = true){
+                calibracoesfeitas[0]= 'Pitaco calibrado';
+              }if (data.calibrationManoDone = true){
+                calibracoesfeitas[1]= 'Manovacuômetro calibrado';
+              }if (data.calibrationCintaDone = true){
+                calibracoesfeitas[2]= 'Cinta calibrada';
+              }
+              var valorlimitepitaco = data.pitacoThreshold;
+              var valorlimitemano = data.manoThreshold;
+              var valorlimitecinta = data.cintaThreshold;
+              var peso = data.height;
+              var altura = data.weight;
+              var entradanaclinica = data.created_at;
+
+              $("#dados_a").append("<br></br><h5 id='titulodg'> Dados Gerais: </h5>");
+                  $("#titulodg").css({'background-color': '#F0F0FF'});
+                  $("#titulodg").css({ 'padding':'4px'});
+                  $("#titulodg").css({ 'display':'inline'});
+                  $("#dados_a").append("<li>Nome: "+ nome +"</li>");
+                  $("#dados_a").append("<li>Idade: "+ idade +"</li>");
+                  $("#dados_a").append("<li>Sexo: "+ sexo +"</li>");
+                  $("#dados_a").append("<li>Peso: "+ peso +"</li>");
+                  $("#dados_a").append("<li>Altura: "+ altura +"</li>");
+                  $("#dados_a").append("<li>Sexo: "+ sexo +"</li>");
+                  $("#dados_a").append("<li>Condição: "+ condicao +"</li>");
+                  $("#dados_a").append("<li>Calibrações feitas: "+ calibracoesfeitas[0] +","+ calibracoesfeitas[1] +"," +calibracoesfeitas[2]+"</li>");
+                  $("#dados_a").append("<li>Valores de Threshold: Pitaco= "+ valorlimitepitaco +"; Manovacuômetro= "+ valorlimitemano +"; Cinta= "+ valorlimitecinta +"</li>");
+                  $("#dados_a").append("<li> Data de iniciação no I Blue It: "+ entradanaclinica +"</li>");
+                  $("#dados_a").append("<li> Observações: "+ OBS +"</li><br></br>");
+
+      //-------------fim apresentação dados gerais do paciente
+      //-------------inicio apresentação dados de calibração
       var calEXP=0; 
       var calINS=0; 
       var calRF=0; 
@@ -256,9 +321,8 @@
               "GameToken": "QkxVRUFQSV9UT0tFTl9ESU9HTw=="
             },
             success: function (data) {
-              $("#dados_a").append("<li>Paciente: "+ Pacientname +"</li>");
               $.each(data, function (i, data) {
-                switch (data.calibrationExercise){
+                switch (data.calibrationExercise){  //verificar se os valores a serem plotados são sempre os mais recentes, ou se é valido pegar os maiores entre as calibrações.
                   case 'ExpiratoryPeak':
                   if(calEXP<data.calibrationValue){
                     calEXP = data.calibrationValue;
@@ -288,7 +352,7 @@
                   console.log("ocorreu algum erro");
                 }
               });
-                  $("#dados_a").append("<ul id='tituloddc'> Dados de Calibrações: </ul>");
+                  $("#dados_a").append("<h5 id='tituloddc'> Dados de Calibrações: </h5>");
                   $("#tituloddc").css({'background-color': '#F0F0FF'});
                   $("#tituloddc").css({ 'padding':'4px'});
                   $("#tituloddc").css({ 'display':'inline'});
@@ -304,18 +368,60 @@
 
           })
 
-
+      //--------------- fim apresentação dados de calibração
+            },
+            error: function() {
+             alert("Ocorreu um erro ao carregar os dados.");
+           }
+            
+      });
 
     }
+ //*****FIM Página de dados gerais
+ //*****INICIO página de gração de gráficos
 
     function PaginadeGeracaodeGraficos(){
-      console.log("Entrada na função de geração dos gráficos bem sucedida");
-    }
 
+          $("#select_calibracaoType").hide(); //esconde barras de seleção iniciais (será retirado quando houver uma pagina de entrada definida)
+          $("#select_minigameType").hide();
+          $("#select_plataformDate").hide();
+
+      console.log("Entrada na função de geração dos gráficos bem sucedida");
+
+      
+      $("#select_charttype").show();
+
+      $("#select_charttype").change(function () {
+      console.log("O gráfico escolhido é: " + $(this).val());
+      
+      switch($(this).val()){
+        case 'pontuacao': highchartgrafpontuacao();
+        break;
+        case 'picoexp': highchartgrafpicoexp();
+        break;
+        case 'picoins': highchartgrafpicoins();
+        break;
+        case 'freqresp': highchartgraffreqresp();
+        break;
+        case 'eficiencia': highchartgrafeficiencia();
+        break;
+        case 'fluxo': highchartgraffluxo();
+        break;
+        default: console.log("ocorreu algum erro"); $("#dados_a").append("<h3>Ocorreu algum erro, atualize a págine e tente novamente.</h3><h6>Se o erro permanecer, contate a assistencia</h6>");
+        break;
+
+      }
+      
+      
+      });
+
+    }
+ //*****FIM página de gração de gráficos
+ //*****INICIO página para o Relatório Geral
     function PaginadoRelatorioFinal(){
       console.log("Entrada na função de geração do relatório final bem sucedida");
     }
-
+//*****FIM página para o Relatório Geral
 
 
 
@@ -325,7 +431,29 @@
 
   });
 
+//****************              GRÁFICOS:                  ****************************************************
+function highchartgrafpontuacao(){
+console.log("apresentanod gráficos de pontuação pelo tempo");
 
+};function highchartgrafpicoexp(){
+console.log("apresentanod gráficos de Pico Expiratório pelo tempo");
+
+};function highchartgrafpicoins(){
+console.log("apresentanod gráficos de Pico Inspiratório pelo tempo");
+
+};function highchartgraffreqresp(){
+console.log("apresentanod gráficos de Frequência Respiratória pelo tempo");
+
+};function highchartgrafeficiencia(){
+console.log("apresentanod gráficos de Eficiência nas sessão ou sessões escolhidas");
+
+};function highchartgraffluxo(){
+console.log("apresentanod gráficos de fluxo pelo tempo na fase escolhida");
+
+};
+
+
+    
 
 </script>
 
