@@ -93,9 +93,9 @@
       <option selected>Data de Jogo</option>
     </select>
 
-    <select id="dados_a" class="custom-select">
-      <option selected>Dados</option>
-    </select>
+    <ul id="dados_a">
+
+    </ul>
 
 
   </main><!-- /.container -->
@@ -118,52 +118,20 @@
 
       console.log("A página selecionada é: " + $(this).val());
 
+
       switch (optTipoDados) {
 
         case 'DG':
-          $("#select_calibracaoType").hide();
-          $("#select_minigameType").hide();
-          $("#select_plataformDate").hide();
-
-          /**/
-
-          var pacientId = $("#select_pacients").val();
-          $.ajax({
-            url: "https://blueapi.azurewebsites.net/api/pacients/" + pacientId + "/calibrations",
-            type: "GET",
-            dataType: "json",
-            headers: {
-              "GameToken": "QkxVRUFQSV9UT0tFTl9ESU9HTw=="
-            },
-            success: function (data) {
-              $.each(data, function (i, item) {
-                $('#dados_a').append($('<option>', {
-                  value: item.calibrationValue,
-                  text: item.calibrationValue
-                }));
-              });
-
-              console.log("Dados Recebidos");
-              console.log(data);
-            }
-
-          })
-
-          /**/
-
+        PaginadeDadosGerais();
           break;
 
         case 'Graf':
-          $("#select_minigameType").hide();
+        PaginadeGeracaodeGraficos();
           break;
 
         case 'RF':
-          $("#select_plataformDate").hide();
+        PaginadoRelatorioFinal();
           break;
-
-
-
-
 
         default:
           $("#select_calibracaoType").show();
@@ -263,6 +231,92 @@
         $("#select_pacients").prop("disabled", false);
       }
     });
+
+
+
+    function PaginadeDadosGerais(){
+          $("#select_calibracaoType").hide();
+          $("#select_minigameType").hide();
+          $("#select_plataformDate").hide();
+
+      console.log("Entrada na função de visualização de dados gerais bem sucedida");
+      
+      var pacientId = $("#select_pacients").val();
+      var Pacientname= toString($('select_pacients').text());
+      var calEXP=0; 
+      var calINS=0; 
+      var calRF=0; 
+      var calEXPDUR=0; 
+      var calINSDUR=0;
+          $.ajax({
+            url: "https://blueapi.azurewebsites.net/api/pacients/" + pacientId + "/calibrations",
+            type: "GET",
+            dataType: "json",
+            headers: {
+              "GameToken": "QkxVRUFQSV9UT0tFTl9ESU9HTw=="
+            },
+            success: function (data) {
+              $("#dados_a").append("<li>Paciente: "+ Pacientname +"</li>");
+              $.each(data, function (i, data) {
+                switch (data.calibrationExercise){
+                  case 'ExpiratoryPeak':
+                  if(calEXP<data.calibrationValue){
+                    calEXP = data.calibrationValue;
+                  }
+                  break;
+                  case 'InspiratoryPeak':
+                  if(calINS>data.calibrationValue){
+                    calINS = data.calibrationValue;
+                  }
+                  break;
+                  case 'RespiratoryFrequency':
+                  if(calRF<data.calibrationValue){
+                    calRF = data.calibrationValue;
+                  }
+                  break;
+                  case 'ExpiratoryDuration':
+                  if(calEXPDUR<data.calibrationValue){
+                    calEXPDUR = data.calibrationValue;
+                  }
+                  break;
+                  case 'InspiratoryDuration':
+                  if(calINSDUR<data.calibrationValue){
+                    calINSDUR = data.calibrationValue;
+                  }
+                  break;
+                  default: 
+                  console.log("ocorreu algum erro");
+                }
+              });
+                  $("#dados_a").append("<ul id='tituloddc'> Dados de Calibrações: </ul>");
+                  $("#tituloddc").css({'background-color': '#F0F0FF'});
+                  $("#tituloddc").css({ 'padding':'4px'});
+                  $("#tituloddc").css({ 'display':'inline'});
+                  $("#dados_a").append("<li>Pico Expiratório: "+ calEXP +" L/min</li>");
+                  $("#dados_a").append("<li>Pico Inspiratório: "+ calINS +" L/min</li>");
+                  $("#dados_a").append("<li>Frequência Respiratória: "+ calRF +" s⁻¹</li>");
+                  $("#dados_a").append("<li>Duração Máxima em Expiração: "+ calEXPDUR +" seg</li>");
+                  $("#dados_a").append("<li>Duração Máxima em Inspiração: "+ calINSDUR +" seg</li>");
+
+              console.log("Dados Recebidos");
+              console.log(data);
+            }
+
+          })
+
+
+
+    }
+
+    function PaginadeGeracaodeGraficos(){
+      console.log("Entrada na função de geração dos gráficos bem sucedida");
+    }
+
+    function PaginadoRelatorioFinal(){
+      console.log("Entrada na função de geração do relatório final bem sucedida");
+    }
+
+
 
 
     function LimparRegistros() {
