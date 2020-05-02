@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 
-<link rel="canonical" href="https://getbootstrap.com/docs/4.0/examples/starter-template/">
+<link rel="canonical" href="https://getbootstrap.com/docs/4.0/examples/starter-template/">  
 
 
 
@@ -19,6 +19,15 @@
 
   <link rel="stylesheet" href="libs/bootstrap-4.4.1-dist/css/bootstrap.min.css">
   <script src="libs/jquery-3.4.1/jquery-3.4.1.min.js"></script>
+
+<script src="libs/code/highcharts.js"></script>
+<script src="libs/code/highcharts-more.js"></script>
+<script src="libs/code/modules/dumbbell.js"></script>
+<script src="libs/code/modules/lollipop.js"></script>
+<script src="libs/code/modules/exporting.js"></script>
+<script src="libs/code/modules/export-data.js"></script>
+
+
 
 <body>
 
@@ -71,7 +80,7 @@
       <h1>I Blue It Analytics</h1>
     </div>
 
-
+<!--  +-*-+-*-+-*-+    BLOCO ABAIXO POSSIVELMENTE SERÁ RETIRADO OU REALOCADO          -->
     <select id="select_calibracaoType" class="custom-select">
       <option selected>Selecione uma Calibração</option>
       <option value="RespiratoryFrequency">Frequência Respiratória</option>
@@ -91,7 +100,7 @@
     <select id="select_plataformDate" class="custom-select">
       <option selected>Data de Jogo</option>
     </select>
-
+<!--  +-*-+-*-+-*-+    BLOCO ACIMA POSSIVELMENTE SERÁ RETIRADO OU REALOCADO          -->
     <select id="select_charttype" class="custom-select">
       <option selected>Selecione o Tipo de gráfico desejado</option>
       <option value="pontuacao">Pontuação por fase e nivel</option>
@@ -101,13 +110,15 @@
       <option value="eficiencia">Eficiência por fase e nivel</option>
       <option value="fluxo">Fluxo respiratória de uma fase</option>
     </select>
-    
 
-    <ul id="dados_a"> <!-- utilizado para apresentação de dados -->
+    <div id="dados_paciente">
+        <!--Espaço onde é alocado os dados do paciente quando selecionado a página de dados gerais-->
+    </div>
 
-    </ul>
 
-    <figure class="highcharts-figure"> <!-- utilizado para apresentação dos gráficos -->
+    <figure class="highcharts-figure" class="row">
+      <highchart id="chart1" config="chartConfig"></highchart>
+      <!-- utilizado para apresentação dos gráficos -->
       <div id="containerHC"></div>
     </figure>
 
@@ -120,33 +131,33 @@
 
 
 <script>
-  $(document).ready(function () {
+  $(document).ready(function () { 
 
-    $("#btn_filtrar").on('click', function () {
+    $("#btn_filtrar").on('click', function () { //criação do botão de filtro, para atualizar a página apenas após selecionar o paciente e a página escolhida.
 
-      LimparRegistros();
+      LimparRegistros(); //encaminha para a função onde são limpados os registro, evitando apresentações consecutivar dos dados caso se atualiza a página diversas vezes.
 
-      var pacientId = $("#select_pacients").val();
+      var pacientId = $("#select_pacients").val();  //adiciona os valores selecionados nas barras de seleção para as variaveis (paciente e tipo de visualização)
       var optTipoDados = $("#select_pageselect").val();
 
-      console.log("A página selecionada é: " + $(this).val());
+      console.log("A página selecionada é: " + $(this).val());   //apresenta no console para inspeção.
 
 
-      switch (optTipoDados) {
+      switch (optTipoDados) {  //encaminha para as as paginas de cada seleção
 
         case 'DG':
-        PaginadeDadosGerais();
+          PaginadeDadosGerais();
           break;
 
         case 'Graf':
-        PaginadeGeracaodeGraficos();
+          PaginadeGeracaodeGraficos();
           break;
 
         case 'RF':
-        PaginadoRelatorioFinal();
+          PaginadoRelatorioFinal();
           break;
 
-        default:
+        default:  //+-*-+-*-+-*-+-*-+-*-+-*-+-*-+-*-+   ARRUMAR, NA PAGINA DEFAULT DEVERÁ VOLTAR PARA UMA PÁGINA INICIAL (A QUAL NÃO TEMOS AINDA) +-*-+-*-+-*-+-*-+-*-+-*-+-*
           $("#select_calibracaoType").show();
           $("#select_minigameType").show();
           $("#select_plataformDate").show();
@@ -155,6 +166,8 @@
 
     });
 
+
+///////////////////////////    POSSIVELMENTE SERÁ RETIRADO OU ALOCADO EM OUTRA PARTE DO CÓDIGO /////////
     $("#select_calibracaoType").change(function () {
       console.log("A calibração selecionada é: " + $(this).val());
       $.ajax({
@@ -194,11 +207,13 @@
         }
       });
     });
+///////////////////////////  **ACIMA**  POSSIVELMENTE SERÁ RETIRADO OU ALOCADO EM OUTRA PARTE DO CÓDIGO /////////
 
-    $("#select_pacients").change(function () {
-      console.log("O paciente escolhido é: " + $(this).val());
 
-      console.log("Buscando informações da plataforma");
+
+    $("#select_pacients").change(function () {        //GERA os dados para seleção dos pacientes, no caso, busca o 
+      console.log("O paciente escolhido é: " + $(this).val());    //nome e o paicentID dos pacientes cadastrados no
+      console.log("Buscando informações da plataforma");          //banco de dados e cria a barra de seleção
       $("#select_plataformDate").prop("disabled", true);
       $.ajax({
         url: "https://blueapi.azurewebsites.net/api/plataforms",
@@ -244,14 +259,15 @@
         $("#select_pacients").prop("disabled", false);
       }
     });
+// está parte acima também cria a seleção de visualizar os ultimos dados da plataforma, mas esta parte será modificada.
 
 
-
- //*****INICIO Página de dados gerais
-    function PaginadeDadosGerais(){
-          $("#select_calibracaoType").hide(); //esconde barras de seleção iniciais (será retirado quando houver uma pagina de entrada definida)
-          $("#select_minigameType").hide();
-          $("#select_plataformDate").hide();
+    //*****INICIO Página de dados gerais
+    function PaginadeDadosGerais() {
+      $("#select_calibracaoType").hide(); //esconde barras de seleção iniciais (será retirado quando houver uma pagina de entrada definida)
+      $("#select_minigameType").hide();
+      $("#select_plataformDate").hide();
+      $("#select_charttype").hide();
 
       console.log("Entrada na função de visualização de dados gerais bem sucedida");
 
@@ -259,63 +275,64 @@
 
       //-------------inicio apresentação dados gerais do paciente
       $.ajax({
-            url: "https://blueapi.azurewebsites.net/api/pacients/" + pacientId,
-            type: "GET",
-            dataType: "json",
-            headers: {
-              "GameToken": "QkxVRUFQSV9UT0tFTl9ESU9HTw=="
-            },
-            success: function (data) { 
-              var nome = data.name;
-              var idade = new Date(); //- data.getFullYear();
-              var sexo = data.sex;
-              if (sexo='Male'){
-                sexo = 'Masculino';
-              }else{
-                sexo='Feminino';
-              }
-              var OBS = data.observations;
-              var condicao = data.condition;
-              var levelsdesbloqueados = data.unlockedLevels;
-              var sessoesjogadas= data.playSessionsDone;
-              calibracoesfeitas = [null , null, null];
-              if (data.calibrationPitacoDone = true){
-                calibracoesfeitas[0]= 'Pitaco calibrado';
-              }if (data.calibrationManoDone = true){
-                calibracoesfeitas[1]= 'Manovacuômetro calibrado';
-              }if (data.calibrationCintaDone = true){
-                calibracoesfeitas[2]= 'Cinta calibrada';
-              }
-              var valorlimitepitaco = data.pitacoThreshold;
-              var valorlimitemano = data.manoThreshold;
-              var valorlimitecinta = data.cintaThreshold;
-              var peso = data.height;
-              var altura = data.weight;
-              var entradanaclinica = data.created_at;
+        url: "https://blueapi.azurewebsites.net/api/pacients/" + pacientId,
+        type: "GET",
+        dataType: "json",
+        headers: {
+          "GameToken": "QkxVRUFQSV9UT0tFTl9ESU9HTw=="
+        },
+        success: function (data) {
+          var nome = data.name;
+          var idade = new Date(); //- data.getFullYear();
+          var sexo = data.sex;
+          if (sexo = 'Male') {
+            sexo = 'Masculino';
+          } else {
+            sexo = 'Feminino';
+          }
+          var OBS = data.observations;
+          var condicao = data.condition;
+          var levelsdesbloqueados = data.unlockedLevels;
+          var sessoesjogadas = data.playSessionsDone;
+          calibracoesfeitas = [null, null, null];
+          if (data.calibrationPitacoDone = true) {
+            calibracoesfeitas[0] = 'Pitaco calibrado';
+          } if (data.calibrationManoDone = true) {
+            calibracoesfeitas[1] = 'Manovacuômetro calibrado';
+          } if (data.calibrationCintaDone = true) {
+            calibracoesfeitas[2] = 'Cinta calibrada';
+          }
+          var valorlimitepitaco = data.pitacoThreshold;
+          var valorlimitemano = data.manoThreshold;
+          var valorlimitecinta = data.cintaThreshold;
+          var peso = data.height;
+          var altura = data.weight;
+          var entradanaclinica = data.created_at;
 
-              $("#dados_a").append("<br></br><h5 id='titulodg'> Dados Gerais: </h5>");
-                  $("#titulodg").css({'background-color': '#F0F0FF'});
-                  $("#titulodg").css({ 'padding':'4px'});
-                  $("#titulodg").css({ 'display':'inline'});
-                  $("#dados_a").append("<li>Nome: "+ nome +"</li>");
-                  $("#dados_a").append("<li>Idade: "+ idade +"</li>");
-                  $("#dados_a").append("<li>Sexo: "+ sexo +"</li>");
-                  $("#dados_a").append("<li>Peso: "+ peso +"</li>");
-                  $("#dados_a").append("<li>Altura: "+ altura +"</li>");
-                  $("#dados_a").append("<li>Sexo: "+ sexo +"</li>");
-                  $("#dados_a").append("<li>Condição: "+ condicao +"</li>");
-                  $("#dados_a").append("<li>Calibrações feitas: "+ calibracoesfeitas[0] +","+ calibracoesfeitas[1] +"," +calibracoesfeitas[2]+"</li>");
-                  $("#dados_a").append("<li>Valores de Threshold: Pitaco= "+ valorlimitepitaco +"; Manovacuômetro= "+ valorlimitemano +"; Cinta= "+ valorlimitecinta +"</li>");
-                  $("#dados_a").append("<li> Data de iniciação no I Blue It: "+ entradanaclinica +"</li>");
-                  $("#dados_a").append("<li> Observações: "+ OBS +"</li><br></br>");
+          var dadospacientgeral = "<div id='dadospacientegeral'>" + 
+          "<br></br><h5 style=''padding':'4px';'display':'inline''> Dados Gerais: </h5>"+
+          "<li>Nome: " + nome + "</li>" +
+          "<li>Idade: " + idade + "</li>" + 
+          "<li>Sexo: " + sexo + "</li>" + 
+          "<li>Peso: " + peso + "</li>" + 
+          "<li>Altura: " + altura + "</li>" + 
+          "<li>Sexo: " + sexo + "</li>" + 
+          "<li>Condição: " + condicao + "</li>" + 
+          "<li>Calibrações feitas: " + calibracoesfeitas[0] + "," + calibracoesfeitas[1] + "," + calibracoesfeitas[2] + "</li>" + 
+          "<li>Valores de Threshold: Pitaco= " + valorlimitepitaco + "; Manovacuômetro= " + valorlimitemano + "; Cinta= " + valorlimitecinta + "</li>" +
+          "<li> Data de iniciação no I Blue It: " + entradanaclinica + "</li>" +
+          "<li> Observações: " + OBS + "</li><br></br>"+
+          "</div>"
 
-      //-------------fim apresentação dados gerais do paciente
-      //-------------inicio apresentação dados de calibração
-      var calEXP=0; 
-      var calINS=0; 
-      var calRF=0; 
-      var calEXPDUR=0; 
-      var calINSDUR=0;
+          $("#dados_paciente").append(dadospacientgeral);
+
+          //-------------fim apresentação dados gerais do paciente
+          //-------------inicio apresentação dados de calibração
+          var calEXP = 0;
+          var calINS = 0;
+          var calRF = 0;
+          var calEXPDUR = 0;
+          var calINSDUR = 0;
           $.ajax({
             url: "https://blueapi.azurewebsites.net/api/pacients/" + pacientId + "/calibrations",
             type: "GET",
@@ -325,45 +342,46 @@
             },
             success: function (data) {
               $.each(data, function (i, data) {
-                switch (data.calibrationExercise){  //verificar se os valores a serem plotados são sempre os mais recentes, ou se é valido pegar os maiores entre as calibrações.
+                switch (data.calibrationExercise) {  //verificar se os valores a serem plotados são sempre os mais recentes, ou se é valido pegar os maiores entre as calibrações.
                   case 'ExpiratoryPeak':
-                  if(calEXP<data.calibrationValue){
-                    calEXP = data.calibrationValue;
-                  }
-                  break;
+                    if (calEXP < data.calibrationValue) {
+                      calEXP = data.calibrationValue;
+                    }
+                    break;
                   case 'InspiratoryPeak':
-                  if(calINS>data.calibrationValue){
-                    calINS = data.calibrationValue;
-                  }
-                  break;
+                    if (calINS > data.calibrationValue) {
+                      calINS = data.calibrationValue;
+                    }
+                    break;
                   case 'RespiratoryFrequency':
-                  if(calRF<data.calibrationValue){
-                    calRF = data.calibrationValue;
-                  }
-                  break;
+                    if (calRF < data.calibrationValue) {
+                      calRF = data.calibrationValue;
+                    }
+                    break;
                   case 'ExpiratoryDuration':
-                  if(calEXPDUR<data.calibrationValue){
-                    calEXPDUR = data.calibrationValue;
-                  }
-                  break;
+                    if (calEXPDUR < data.calibrationValue) {
+                      calEXPDUR = data.calibrationValue;
+                    }
+                    break;
                   case 'InspiratoryDuration':
-                  if(calINSDUR<data.calibrationValue){
-                    calINSDUR = data.calibrationValue;
-                  }
-                  break;
-                  default: 
-                  console.log("ocorreu algum erro");
+                    if (calINSDUR < data.calibrationValue) {
+                      calINSDUR = data.calibrationValue;
+                    }
+                    break;
+                  default:
+                    console.log("ocorreu algum erro");
                 }
               });
-                  $("#dados_a").append("<h5 id='tituloddc'> Dados de Calibrações: </h5>");
-                  $("#tituloddc").css({'background-color': '#F0F0FF'});
-                  $("#tituloddc").css({ 'padding':'4px'});
-                  $("#tituloddc").css({ 'display':'inline'});
-                  $("#dados_a").append("<li>Pico Expiratório: "+ calEXP +" L/min</li>");
-                  $("#dados_a").append("<li>Pico Inspiratório: "+ calINS +" L/min</li>");
-                  $("#dados_a").append("<li>Frequência Respiratória: "+ calRF +" s⁻¹</li>");
-                  $("#dados_a").append("<li>Duração Máxima em Expiração: "+ calEXPDUR +" seg</li>");
-                  $("#dados_a").append("<li>Duração Máxima em Inspiração: "+ calINSDUR +" seg</li>");
+              var dadospacientehtmlcalibracao = "<div id='listadadoscalibracao'>" +
+                "<h5 style=''padding':'4px';'display':'inline''> Dados de Calibrações: </h5>" +
+                "<li>Pico Expiratório: " + calEXP + " L/min</li>" +
+                "<li>Pico Inspiratório: " + calINS + " L/min</li>" +
+                "<li>Frequência Respiratória: " + calRF + " s⁻¹</li>" +
+                "<li>Duração Máxima em Expiração: " + calEXPDUR + " seg</li>" +
+                "<li>Duração Máxima em Inspiração: " + calINSDUR + " seg</li>" +
+                "</div>";
+
+              $("#dados_paciente").append(dadospacientehtmlcalibracao);
 
               console.log("Dados Recebidos");
               console.log(data);
@@ -371,137 +389,138 @@
 
           })
 
-      //--------------- fim apresentação dados de calibração
-            },
-            error: function() {
-             alert("Ocorreu um erro ao carregar os dados.");
-           }
-            
+          //--------------- fim apresentação dados de calibração
+        },
+        error: function () {
+          alert("Ocorreu um erro ao carregar os dados. Reinicie a página e tente novamente"); //alerta de erro
+        }
+
       });
 
     }
- //*****FIM Página de dados gerais
- //*****INICIO página de gração de gráficos
+    //*****FIM Página de dados gerais
+    //*****INICIO página de gração de gráficos
 
-    function PaginadeGeracaodeGraficos(){
+    function PaginadeGeracaodeGraficos() {
 
-          $("#select_calibracaoType").hide(); //esconde barras de seleção iniciais (será retirado quando houver uma pagina de entrada definida)
-          $("#select_minigameType").hide();
-          $("#select_plataformDate").hide();
+      $("#select_calibracaoType").hide(); //esconde barras de seleção iniciais (será retirado quando houver uma pagina de entrada definida)
+      $("#select_minigameType").hide();
+      $("#select_plataformDate").hide();
 
       console.log("Entrada na função de geração dos gráficos bem sucedida");
 
-      
+
       $("#select_charttype").show();
 
       $("#select_charttype").change(function () {
-      console.log("O gráfico escolhido é: " + $(this).val());
-      
-      switch($(this).val()){
-        case 'pontuacao': highchartgrafpontuacao();
-        break;
-        case 'picoexp': highchartgrafpicoexp();
-        break;
-        case 'picoins': highchartgrafpicoins();
-        break;
-        case 'freqresp': highchartgraffreqresp();
-        break;
-        case 'eficiencia': highchartgrafeficiencia();
-        break;
-        case 'fluxo': highchartgraffluxo();
-        break;
-        default: console.log("ocorreu algum erro"); $("#dados_a").append("<h3>Ocorreu algum erro, atualize a págine e tente novamente.</h3><h6>Se o erro permanecer, contate a assistencia</h6>");
-        break;
+        console.log("O gráfico escolhido é: " + $(this).val());
 
-      }
-      
-      
+        switch ($(this).val()) {                      //encaminha para cada tipo de gráfico, 
+          case 'pontuacao': highchartgrafpontuacao();
+            break;
+          case 'picoexp': highchartgrafpicoexp();
+            break;
+          case 'picoins': highchartgrafpicoins();
+            break;
+          case 'freqresp': highchartgraffreqresp();
+            break;
+          case 'eficiencia': highchartgrafeficiencia();
+            break;
+          case 'fluxo': highchartgraffluxo();
+            break;
+          default: console.log("ocorreu algum erro"); $("#dados_paciente").append("<h3>Ocorreu algum erro, atualize a págine e tente novamente.</h3><h6>Se o erro permanecer, contate a assistencia</h6>");
+            break;
+
+        }
+
+
       });
 
     }
- //*****FIM página de gração de gráficos
- //*****INICIO página para o Relatório Geral
-    function PaginadoRelatorioFinal(){
+    //*****FIM página de gração de gráficos
+    //*****INICIO página para o Relatório Geral
+    function PaginadoRelatorioFinal() {
       console.log("Entrada na função de geração do relatório final bem sucedida");
     }
-//*****FIM página para o Relatório Geral
+    //*****FIM página para o Relatório Geral
 
 
 
     function LimparRegistros() {
-      $('#dados_a').find('option').remove().end();
+      $('#listadadoscalibracao').remove();
+      $('#dadospacientegeral').remove();
     }
 
   });
 
 
-//****************              GRÁFICOS:                  ****************************************************
-function highchartgrafpontuacao(){    //++++++++++++++++++++++++++++++++++               1
-console.log("apresentando gráficos de pontuação pelo tempo");
+  //****************              GRÁFICOS:                  ****************************************************
+  function highchartgrafpontuacao() {    //++++++++++++++++++++++++++++++++++               1
+    console.log("apresentando gráficos de pontuação pelo tempo");
 
-};function highchartgrafpicoexp(){    //++++++++++++++++++++++++++++++++++               2
-console.log("apresentando gráficos de Pico Expiratório pelo tempo");
+  }; function highchartgrafpicoexp() {    //++++++++++++++++++++++++++++++++++               2
+    console.log("apresentando gráficos de Pico Expiratório pelo tempo");
 
- /*var Highcharts;
-  Highcharts.chart('containerHC', {
+    var Highcharts;
+     Highcharts.chart('containerHC', {
+   
+   chart: {
+       type: 'lollipop'
+   },
+   
+   legend: {
+       enabled: false
+   },
+   
+   subtitle: {
+       text: 'João 123'
+   },
+   
+   title: {
+       text: 'Pico Expiratório por Sessão'
+   },
+   
+   tooltip: {
+       shared: true
+   },
+   
+   xAxis: {
+       title: {
+           text: 'sessão'
+       },
+       type: 'category'
+   },
+   
+   yAxis: {
+       title: {
+           text: 'Pico expiratório (L/min)'
+       }
+   },
+   
+   series: [{
+       name: 'Pico expiratório',
+       data: [{name: '1ª',
+               low: 150
+       }, {    name: '2ª',
+               low: 172
+       }, {    name: '3ª',
+               low: 210},] 
+   }]
+   });
+     
+  }; function highchartgrafpicoins() {      //++++++++++++++++++++++++++++++++++               3
+    console.log("apresentando gráficos de Pico Inspiratório pelo tempo");
 
-chart: {
-    type: 'lollipop'
-},
+  }; function highchartgraffreqresp() {      //++++++++++++++++++++++++++++++++++               4
+    console.log("apresentando gráficos de Frequência Respiratória pelo tempo");
 
-legend: {
-    enabled: false
-},
+  }; function highchartgrafeficiencia() {    //++++++++++++++++++++++++++++++++++               5
+    console.log("apresentando gráficos de Eficiência nas sessão ou sessões escolhidas");
 
-subtitle: {
-    text: 'João 123'
-},
+  }; function highchartgraffluxo() {        //++++++++++++++++++++++++++++++++++               6
+    console.log("apresentando gráficos de fluxo pelo tempo na fase escolhida");
 
-title: {
-    text: 'Pico Expiratório por Sessão'
-},
-
-tooltip: {
-    shared: true
-},
-
-xAxis: {
-    title: {
-        text: 'sessão'
-    },
-    type: 'category'
-},
-
-yAxis: {
-    title: {
-        text: 'Pico expiratório (L/min)'
-    }
-},
-
-series: [{
-    name: 'Pico expiratório',
-    data: [{name: '1ª',
-            low: 150
-    }, {    name: '2ª',
-            low: 172
-    }, {    name: '3ª',
-            low: 210},] 
-}]
-});
-  */
-};function highchartgrafpicoins(){      //++++++++++++++++++++++++++++++++++               3
-console.log("apresentando gráficos de Pico Inspiratório pelo tempo");
-
-};function highchartgraffreqresp(){      //++++++++++++++++++++++++++++++++++               4
-console.log("apresentando gráficos de Frequência Respiratória pelo tempo");
-
-};function highchartgrafeficiencia(){    //++++++++++++++++++++++++++++++++++               5
-console.log("apresentando gráficos de Eficiência nas sessão ou sessões escolhidas");
-
-};function highchartgraffluxo(){        //++++++++++++++++++++++++++++++++++               6
-console.log("apresentando gráficos de fluxo pelo tempo na fase escolhida");
-
-};
+  };
 
 
 </script>
