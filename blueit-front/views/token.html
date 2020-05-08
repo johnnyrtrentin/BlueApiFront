@@ -12,12 +12,9 @@
         </div>
         <div class="card-body" style="width: 40rem;">
           <div class="text-center">
-            <input type="text" readonly value="4c3844cc-5efb-4c75-af8b-03c89d10ed8b"
+            <input id="inputToken" type="text" readonly value=""
               style="width: 30rem;text-align:center;">
-            <button type="button" class="btn btn-info btn-circle" data-toggle="copyToClipboard"
-              data-placement="top" title="Copiar">
-              <i class="far fa-copy"></i>
-            </button>
+              <a id="btnCopyTokenToClipboard" tabindex="0" class="btn btn-lg btn-danger" role="button" data-toggle="popover" data-content="Copiado!"><i class="far fa-copy"></i></a>
           </div>
         </div>
       </div>
@@ -27,10 +24,10 @@
           <h6 class="m-0 font-weight-bold text-primary">Gerar Token de Acesso</h6>
         </div>
         <div class="card-body">
-          <h5>Após gerar um token de acesso, não será possível gerar um novo a não ser que o existente seja
-            revogado!.</h5>
+          <h6>Após gerar um token de acesso, não será possível gerar um novo a não ser que o existente seja
+            revogado! (Contactar o suporte).</h6>
           <div class="text-center">
-            <button type="button" class="btn btn-success btn-icon-split"><span class="icon text-white-50"><i
+            <button type="button" class="btn btn-success btn-icon-split" id="btnGenerateToken"><span class="icon text-white-50"><i
                   class="fas fa-plus"></i></span><span class="text">Gerar Token de Acesso</span></button>
           </div>
         </div>
@@ -39,3 +36,41 @@
     </div>
 
   </div>
+
+<script>
+  $('[data-toggle="popover"]').popover()
+  var userToken = JSON.parse(sessionStorage.getItem('userCredentials')).gameToken;
+  var inputEl = document.getElementById('inputToken');
+  if(userToken == "")
+    inputEl.value = "Você não gerou um Token de Acesso.";
+  else{
+    inputEl.value = userToken;
+    document.getElementById('btnGenerateToken').disabled = true;
+  }
+
+  $("#btnCopyTokenToClipboard").on("click", function(e){
+    var inputToken = document.getElementById('inputToken');
+    inputToken.select();
+    inputToken.setSelectionRange(0, 99999); /*For mobile devices*/
+    /* Copy the text inside the text field */
+    document.execCommand("copy");
+  })
+
+  $("#btnGenerateToken").on("click", function(e){
+    $.ajax({
+      url: APP_VARIABLES.API_ENDPOINT + "CreateGameToken",
+      data: JSON.stringify({
+        userId: JSON.parse(sessionStorage.getItem('userCredentials')).userId,
+      }),
+      type: "POST",
+      dataType: "json",
+      success: function (d) {
+          document.getElementById('inputToken').value = d.data.gameToken
+      },
+      error: function(e){
+      }
+      
+    });
+  })
+
+</script>

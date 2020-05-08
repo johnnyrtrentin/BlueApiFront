@@ -17,6 +17,8 @@ page('calibracao/calibracaoHistorico', calibracaoHistorico);
 
 page('login', login);
 
+page('logout', logout);
+
 page('cadastro', cadastro);
 
 page('*', notfound);
@@ -94,10 +96,12 @@ function calibracaoHistorico() {
 }
 
 function login() {
-    if (!isAuthenticated()) {
-        page.redirect('/login');
-    }
     window.location.href = "/login.html";
+}
+
+function logout() {
+    sessionStorage.clear();
+    page.redirect('/login');
 }
 
 function cadastro() {
@@ -108,25 +112,26 @@ function cadastro() {
 }
 
 function isAuthenticated() {
-    var storedUserCredentials = localStorage.getItem('userCredentials');
+    var storedUserCredentials = sessionStorage.getItem('userCredentials');
     if (storedUserCredentials == null || userCredentials == 'undefined') {
+        console.log("Storage Null");
         return false;
     }
     var userCredentials = JSON.parse(storedUserCredentials);
     var isValidCredentials = validateUserCredentials(userCredentials);
-    if (!isValidCredentials) {
+    if (!isValidCredentials)
         return false;
-    }
-    if (userCredentials.authenticated) {
+    else
         return true;
-    } else {
-        false;
-    }
 }
 
 function validateUserCredentials(userCredentials) {
-    var keysNeeded = ['authenticated', 'username', 'password', 'gameToken'];
+    var keysNeeded = ['fullname', 'gameToken', 'userId', 'authExpirationTime', 'authTime'];
     var keys = Object.keys(userCredentials);
     var hasAllKeys = keysNeeded.every(x => keys.indexOf(x) >= 0)
     return hasAllKeys;
+}
+
+const APP_VARIABLES = {
+    API_ENDPOINT: "http://localhost:7071/api/"
 }
