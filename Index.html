@@ -1,8 +1,8 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-BR">
 
-<link rel="canonical" href="https://getbootstrap.com/docs/4.0/examples/starter-template/">  
 
+<link rel="canonical" href="https://getbootstrap.com/docs/4.0/examples/starter-template/">
 
 
 <style type="text/css" id="dark-mode-custom-style"></style>
@@ -20,13 +20,20 @@
   <link rel="stylesheet" href="libs/bootstrap-4.4.1-dist/css/bootstrap.min.css">
   <script src="libs/jquery-3.4.1/jquery-3.4.1.min.js"></script>
 
-<script src="libs/code/highcharts.js"></script>
-<script src="libs/code/highcharts-more.js"></script>
-<script src="libs/code/modules/dumbbell.js"></script>
-<script src="libs/code/modules/lollipop.js"></script>
-<script src="libs/code/modules/exporting.js"></script>
-<script src="libs/code/modules/export-data.js"></script>
+  <script src="libs/code/highcharts.js"></script>
+  <script src="libs/code/highcharts-more.js"></script>
+  <script src="libs/code/modules/dumbbell.js"></script>
+  <script src="libs/code/modules/lollipop.js"></script>
+  <script src="libs/code/modules/exporting.js"></script>
+  <script src="libs/code/modules/export-data.js"></script>
+  <script src="libs/code/modules/accessibility.js"></script>
 
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.2/moment.min.js"></script>
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.0.1/js/tempusdominus-bootstrap-4.min.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.0.1/css/tempusdominus-bootstrap-4.min.css" />
+ <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.css" />
+ 
+  
 
 
 <body>
@@ -80,7 +87,7 @@
       <h1>I Blue It Analytics</h1>
     </div>
 
-<!--  +-*-+-*-+-*-+    BLOCO ABAIXO POSSIVELMENTE SERÁ RETIRADO OU REALOCADO          -->
+    <!--  +-*-+-*-+-*-+    BLOCO ABAIXO POSSIVELMENTE SERÁ RETIRADO OU REALOCADO          -->
     <select id="select_calibracaoType" class="custom-select">
       <option selected>Selecione uma Calibração</option>
       <option value="RespiratoryFrequency">Frequência Respiratória</option>
@@ -90,17 +97,13 @@
       <option value="ExpiratoryDuration">Duração Expiração</option>
     </select>
 
-    <select id="select_minigameType" class="custom-select">
-      <option selected>Selecione um Minigame</option>
-      <option value="CakeGame">Velas no Bolo</option>
-      <option value="WaterGame">Copo D'Água</option>
-    </select>
 
 
     <select id="select_plataformDate" class="custom-select">
       <option selected>Data de Jogo</option>
     </select>
-<!--  +-*-+-*-+-*-+    BLOCO ACIMA POSSIVELMENTE SERÁ RETIRADO OU REALOCADO          -->
+    <!--  +-*-+-*-+-*-+    BLOCO ACIMA POSSIVELMENTE SERÁ RETIRADO OU REALOCADO          -->
+
     <select id="select_charttype" class="custom-select">
       <option selected>Selecione o Tipo de gráfico desejado</option>
       <option value="pontuacao">Pontuação por fase e nivel</option>
@@ -112,18 +115,84 @@
     </select>
 
     <div id="dados_paciente">
-        <!--Espaço onde é alocado os dados do paciente quando selecionado a página de dados gerais-->
+      <!--Espaço onde é alocado os dados do paciente quando selecionado a página de dados gerais-->
     </div>
 
 
-    <figure class="highcharts-figure" class="row">
-      <highchart id="chart1" config="chartConfig"></highchart>
-      <!-- utilizado para apresentação dos gráficos -->
-      <div id="containerHC"></div>
-    </figure>
+    <!--  seletor minigame a ser observado -->
+    <select id="select_minigameType" class="custom-select">
+      <option selected>Selecione um Minigame</option>
+      <option value="CakeGame">Velas no Bolo</option>
+      <option value="WaterGame">Copo D'Água</option>
+    </select>
+
+      <!--  seletor de dispositovo a ser observado -->
+    <select id="select_Device" class="custom-select">
+      <option selected>Selecione um Dispositivo</option>
+      <option value="Pitaco">Pitaco</option>
+      <option value="Mano">Manovacuômetro</option>
+      <option value="Cinta">Cinta</option>
+    </select>
+
+<!--  seletor data 1 -->
+    <div class="container">
+      <div class="row">
+          <div class="col-sm-6">
+              <div class="form-group">
+                  <div class="input-group date" id="datetimepicker1" data-target-input="nearest">
+                      <input type="text" class="form-control datetimepicker-input" data-target="#datetimepicker1"/>
+                      <div class="input-group-append" data-target="#datetimepicker1" data-toggle="datetimepicker">
+                          <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                      </div>
+                  </div>
+              </div>
+          </div>
+          <script type="text/javascript">
+              $(function () {
+                  $('#datetimepicker1').datetimepicker({
+                    format: 'DD/MM/YYYY',
+                  });
+              });
+          </script>
+      </div>
+  </div>
+
+  <!--  seletor data 2 -->
+  <div class="container">
+    <div class="row">
+        <div class="col-sm-6">
+            <div class="form-group">
+                <div class="input-group date" id="datetimepicker2" data-target-input="nearest">
+                    <input type="text" class="form-control datetimepicker-input" data-target="#datetimepicker2"/>
+                    <div class="input-group-append" data-target="#datetimepicker2" data-toggle="datetimepicker">
+                        <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script type="text/javascript">
+            $(function () {
+                $('#datetimepicker2').datetimepicker({
+                  format: 'DD/MM/YYYY',
+                });
+            });
+        </script>
+    </div>
+</div>
+
+<div>
+  <button id="btn_GerarGraf" type="button" class="btn btn-primary">Gerar Gráfico</button>
+</div>
+
+<figure class="highcharts-figure" class="row">
+  <highchart id="chart1" config="chartConfig"></highchart>
+  <!-- utilizado para apresentação dos gráficos -->
+  <div id="containerHC"></div>
+  <div id="container2"></div>
+</figure>
+
 
   </main><!-- /.container -->
-
 
 
 
@@ -131,11 +200,23 @@
 
 
 <script>
-  $(document).ready(function () { 
+  $(document).ready(function () {
+    
+      $("#select_calibracaoType").hide(); //esconde barras de seleção iniciais (será retirado quando houver uma pagina de entrada definida)
+      $("#select_minigameType").hide();
+      $("#select_Device").hide();
+      $("#select_plataformDate").hide();
+      $("#select_charttype").hide();
+      $('#datetimepicker1').hide();
+      $('#datetimepicker2').hide();
+      $('#btn_GerarGraf').hide();
 
     $("#btn_filtrar").on('click', function () { //criação do botão de filtro, para atualizar a página apenas após selecionar o paciente e a página escolhida.
 
       LimparRegistros(); //encaminha para a função onde são limpados os registro, evitando apresentações consecutivar dos dados caso se atualiza a página diversas vezes.
+
+      var date_input= $("#datetimepicker1").val()
+      console.log(date_input);
 
       var pacientId = $("#select_pacients").val();  //adiciona os valores selecionados nas barras de seleção para as variaveis (paciente e tipo de visualização)
       var optTipoDados = $("#select_pageselect").val();
@@ -167,7 +248,7 @@
     });
 
 
-///////////////////////////    POSSIVELMENTE SERÁ RETIRADO OU ALOCADO EM OUTRA PARTE DO CÓDIGO /////////
+    ///////////////////////////    POSSIVELMENTE SERÁ RETIRADO OU ALOCADO EM OUTRA PARTE DO CÓDIGO /////////
     $("#select_calibracaoType").change(function () {
       console.log("A calibração selecionada é: " + $(this).val());
       $.ajax({
@@ -179,7 +260,7 @@
         type: "GET",
         dataType: "json",
         headers: {
-          "GameToken": "QkxVRUFQSV9UT0tFTl9ESU9HTw=="
+          "GameToken": "e2cfa72e-7fc3-4f45-aa6f-2d904299d6cf"
         },
         success: function (data) {
           console.log("Dados Recebidos");
@@ -199,7 +280,7 @@
         type: "GET",
         dataType: "json",
         headers: {
-          "GameToken": "QkxVRUFQSV9UT0tFTl9ESU9HTw=="
+          "GameToken": "e2cfa72e-7fc3-4f45-aa6f-2d904299d6cf"
         },
         success: function (data) {
           console.log("Dados Recebidos");
@@ -207,7 +288,7 @@
         }
       });
     });
-///////////////////////////  **ACIMA**  POSSIVELMENTE SERÁ RETIRADO OU ALOCADO EM OUTRA PARTE DO CÓDIGO /////////
+    ///////////////////////////  **ACIMA**  POSSIVELMENTE SERÁ RETIRADO OU ALOCADO EM OUTRA PARTE DO CÓDIGO /////////
 
 
 
@@ -223,7 +304,7 @@
         type: "GET",
         dataType: "json",
         headers: {
-          "GameToken": "QkxVRUFQSV9UT0tFTl9ESU9HTw=="
+          "GameToken": "e2cfa72e-7fc3-4f45-aa6f-2d904299d6cf"
         },
         success: function (data) {
           console.log("Dados Recebidos");
@@ -246,11 +327,11 @@
       type: "GET",
       dataType: "json",
       headers: {
-        "GameToken": "QkxVRUFQSV9UT0tFTl9ESU9HTw=="
+        "GameToken": "e2cfa72e-7fc3-4f45-aa6f-2d904299d6cf"
       },
       success: function (data) {
         console.log("Lista de Pacientes Recebidos");
-        $.each(data, function (i, item) {
+        $.each(data.data, function (i, item) {
           $('#select_pacients').append($('<option>', {
             value: item._id,
             text: item.name
@@ -259,7 +340,7 @@
         $("#select_pacients").prop("disabled", false);
       }
     });
-// está parte acima também cria a seleção de visualizar os ultimos dados da plataforma, mas esta parte será modificada.
+    // está parte acima também cria a seleção de visualizar os ultimos dados da plataforma, mas esta parte será modificada.
 
 
     //*****INICIO Página de dados gerais
@@ -279,7 +360,7 @@
         type: "GET",
         dataType: "json",
         headers: {
-          "GameToken": "QkxVRUFQSV9UT0tFTl9ESU9HTw=="
+          "GameToken": "e2cfa72e-7fc3-4f45-aa6f-2d904299d6cf"
         },
         success: function (data) {
           var nome = data.name;
@@ -309,20 +390,20 @@
           var altura = data.weight;
           var entradanaclinica = data.created_at;
 
-          var dadospacientgeral = "<div id='dadospacientegeral'>" + 
-          "<br></br><h5 style=''padding':'4px';'display':'inline''> Dados Gerais: </h5>"+
-          "<li>Nome: " + nome + "</li>" +
-          "<li>Idade: " + idade + "</li>" + 
-          "<li>Sexo: " + sexo + "</li>" + 
-          "<li>Peso: " + peso + "</li>" + 
-          "<li>Altura: " + altura + "</li>" + 
-          "<li>Sexo: " + sexo + "</li>" + 
-          "<li>Condição: " + condicao + "</li>" + 
-          "<li>Calibrações feitas: " + calibracoesfeitas[0] + "," + calibracoesfeitas[1] + "," + calibracoesfeitas[2] + "</li>" + 
-          "<li>Valores de Threshold: Pitaco= " + valorlimitepitaco + "; Manovacuômetro= " + valorlimitemano + "; Cinta= " + valorlimitecinta + "</li>" +
-          "<li> Data de iniciação no I Blue It: " + entradanaclinica + "</li>" +
-          "<li> Observações: " + OBS + "</li><br></br>"+
-          "</div>"
+          var dadospacientgeral = "<div id='dadospacientegeral'>" +
+            "<br></br><h5 style=''padding':'4px';'display':'inline''> Dados Gerais: </h5>" +
+            "<li>Nome: " + nome + "</li>" +
+            "<li>Idade: " + idade + "</li>" +
+            "<li>Sexo: " + sexo + "</li>" +
+            "<li>Peso: " + peso + "</li>" +
+            "<li>Altura: " + altura + "</li>" +
+            "<li>Sexo: " + sexo + "</li>" +
+            "<li>Condição: " + condicao + "</li>" +
+            "<li>Calibrações feitas: " + calibracoesfeitas[0] + "," + calibracoesfeitas[1] + "," + calibracoesfeitas[2] + "</li>" +
+            "<li>Valores de Threshold: Pitaco= " + valorlimitepitaco + "; Manovacuômetro= " + valorlimitemano + "; Cinta= " + valorlimitecinta + "</li>" +
+            "<li> Data de iniciação no I Blue It: " + entradanaclinica + "</li>" +
+            "<li> Observações: " + OBS + "</li><br></br>" +
+            "</div>"
 
           $("#dados_paciente").append(dadospacientgeral);
 
@@ -338,10 +419,10 @@
             type: "GET",
             dataType: "json",
             headers: {
-              "GameToken": "QkxVRUFQSV9UT0tFTl9ESU9HTw=="
+              "GameToken": "e2cfa72e-7fc3-4f45-aa6f-2d904299d6cf"
             },
             success: function (data) {
-              $.each(data, function (i, data) {
+              $.each(data.data, function (i, data) {
                 switch (data.calibrationExercise) {  //verificar se os valores a serem plotados são sempre os mais recentes, ou se é valido pegar os maiores entre as calibrações.
                   case 'ExpiratoryPeak':
                     if (calEXP < data.calibrationValue) {
@@ -406,6 +487,8 @@
       $("#select_calibracaoType").hide(); //esconde barras de seleção iniciais (será retirado quando houver uma pagina de entrada definida)
       $("#select_minigameType").hide();
       $("#select_plataformDate").hide();
+      $('#datetimepicker1').hide();
+      $('#datetimepicker2').hide();
 
       console.log("Entrada na função de geração dos gráficos bem sucedida");
 
@@ -451,77 +534,174 @@
       $('#dadospacientegeral').remove();
     }
 
-  });
+    //****************              GRÁFICOS:                  ****************************************************
+    function highchartgrafpontuacao() {    //++++++++++++++++++++++++++++++++++               1
+      console.log("apresentando gráficos de pontuação pelo tempo");
+
+    }; 
 
 
-  //****************              GRÁFICOS:                  ****************************************************
-  function highchartgrafpontuacao() {    //++++++++++++++++++++++++++++++++++               1
-    console.log("apresentando gráficos de pontuação pelo tempo");
 
-  }; function highchartgrafpicoexp() {    //++++++++++++++++++++++++++++++++++               2
-    console.log("apresentando gráficos de Pico Expiratório pelo tempo");
 
-    var Highcharts;
-     Highcharts.chart('containerHC', {
-   
-   chart: {
-       type: 'lollipop'
-   },
-   
-   legend: {
-       enabled: false
-   },
-   
-   subtitle: {
-       text: 'João 123'
-   },
-   
-   title: {
-       text: 'Pico Expiratório por Sessão'
-   },
-   
-   tooltip: {
-       shared: true
-   },
-   
-   xAxis: {
-       title: {
-           text: 'sessão'
-       },
-       type: 'category'
-   },
-   
-   yAxis: {
-       title: {
-           text: 'Pico expiratório (L/min)'
-       }
-   },
-   
-   series: [{
-       name: 'Pico expiratório',
-       data: [{name: '1ª',
-               low: 150
-       }, {    name: '2ª',
-               low: 172
-       }, {    name: '3ª',
-               low: 210},] 
-   }]
-   });
-     
-  }; function highchartgrafpicoins() {      //++++++++++++++++++++++++++++++++++               3
-    console.log("apresentando gráficos de Pico Inspiratório pelo tempo");
+function highchartgrafpicoexp() { 
 
-  }; function highchartgraffreqresp() {      //++++++++++++++++++++++++++++++++++               4
-    console.log("apresentando gráficos de Frequência Respiratória pelo tempo");
+  $("#select_calibracaoType").hide(); //esconde barras de seleção iniciais (será retirado quando houver uma pagina de entrada definida)
+  $("#select_plataformDate").hide();
+  $("#select_charttype").show();
+  $("#select_minigameType").show();
+  $("#select_Device").show();
+  $('#datetimepicker1').show();
+  $('#datetimepicker2').show();
+  $('#btn_GerarGraf').show();
 
-  }; function highchartgrafeficiencia() {    //++++++++++++++++++++++++++++++++++               5
-    console.log("apresentando gráficos de Eficiência nas sessão ou sessões escolhidas");
 
-  }; function highchartgraffluxo() {        //++++++++++++++++++++++++++++++++++               6
-    console.log("apresentando gráficos de fluxo pelo tempo na fase escolhida");
+$("#btn_GerarGraf").on('click', function () {
+  var MGS = $("#select_minigameType").val();
+  var DS = $("#select_Device").val();
 
-  };
+  var D1=$("#datetimepicker1").data();
+  var D2=$("#datetimepicker2").data();
+  //var D11 = Date.parse(D1);
+//console.log(D11);
 
+$.ajax({
+  url: "https://blueapi.azurewebsites.net/api/pacients/5eb48243ca979a1f907f9fa1/minigames",
+  type: "GET",
+  dataType: "json",
+  data: {
+          "minigameName": MGS,
+         // "gameDevice":DS
+        },
+  headers: {
+    "GameToken": "e2cfa72e-7fc3-4f45-aa6f-2d904299d6cf"
+  },
+  success: function (data) {
+    console.log("Dados Recebidos");
+    console.log(data);
+
+    var objValues = {
+      maiores: [],
+      medios: [],
+      menores: []
+    }
+
+    var values = data.data.map(function (value) {
+      var flowValues = value.flowDataRounds.map(x => x.roundFlowScore).sort(function (a, b) {return a - b; });
+      objValues.maiores.push(flowValues[2]);
+      objValues.medios.push(flowValues[1]);
+      objValues.menores.push(flowValues[0]);
+    });
+
+    var tamEixoX = objValues.maiores.length
+    var ArrayTamX= [];
+    for(i=0; i<tamEixoX; i++){
+      ArrayTamX[i]= (i+1)+"";
+    }
+    plot1(objValues,ArrayTamX);
+  },
+
+  error: function () {
+    alert("Ocorreu um erro ao carregar os dados. Reinicie a página e tente novamente"); //alerta de erro
+  },
+  
+});
+});
+};
+
+
+
+
+function plot1(objValues,ArrayTamX) {
+
+console.log("apresentando gráficos de fluxo pelo tempo na fase escolhida");
+  
+Highcharts.chart('container2', {
+  chart: {
+    zoomType: 'xy'
+  },
+  title: {
+    text: 'Pico Expiratório minigame'
+  },
+  xAxis: [{
+    category: ArrayTamX,
+  }],
+  yAxis: [{ // Primary yAxis
+    labels: {
+      format: '{value} L/min',
+      style: {
+        color: Highcharts.getOptions().colors[1]
+      }
+    },  
+    title: {
+      text: 'pico Expiratório',
+      style: {
+        color: Highcharts.getOptions().colors[1]
+      }
+    }
+  }, { // Secondary yAxis
+    title: {
+      text: '',
+      style: {
+        color: Highcharts.getOptions().colors[0]
+      }
+    },
+    labels: {
+      format: '{value}',
+      style: {
+        color: Highcharts.getOptions().colors[0]
+      }
+    },
+    opposite: true
+  }],
+
+  tooltip: {
+    shared: true
+  },
+
+  series: [{
+    name: 'Maior pico da sessão',
+    type: 'spline',
+    lineWidth: 0.5,
+    data: objValues.maiores,
+    tooltip: {
+      pointFormat: '<span style="font-weight: bold; color: {series.color}">{series.name}: {point.y:.1f}L/min  </span>'
+    }
+  }, {
+    name: 'Médio pico da sessão',
+    type: 'spline',
+    lineWidth: 0.5,
+    data: objValues.medios,
+    tooltip: {
+      pointFormat: '<span style="font-weight: bold; color: {series.color}">{series.name}: {point.y:.1f}L/min  </span>'
+    }}, {
+    name: 'Menor pico da sessão',
+    type: 'spline',
+    lineWidth: 0.5,
+    data: objValues.menores,
+    tooltip: {
+      pointFormat: '<span style="font-weight: bold; color: {series.color}">{series.name}: {point.y:.1f}L/min  </span>'
+    }
+}]
+});
+
+    }; function highchartgrafpicoins() {      //++++++++++++++++++++++++++++++++++               3
+      console.log("apresentando gráficos de Pico Inspiratório pelo tempo");
+
+    }; function highchartgraffreqresp() {      //++++++++++++++++++++++++++++++++++               4
+      console.log("apresentando gráficos de Frequência Respiratória pelo tempo");
+
+    }; function highchartgrafeficiencia() {    //++++++++++++++++++++++++++++++++++               5
+      console.log("apresentando gráficos de Eficiência nas sessão ou sessões escolhidas");
+
+    }; function highchartgraffluxo() {        //++++++++++++++++++++++++++++++++++               6
+      console.log("apresentando gráficos de fluxo pelo tempo na fase escolhida");
+
+    };
+
+
+
+
+  }); // Fim de "  $(document).ready(function () {  " 
 
 </script>
 
