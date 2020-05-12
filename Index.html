@@ -215,8 +215,6 @@
 
       LimparRegistros(); //encaminha para a função onde são limpados os registro, evitando apresentações consecutivar dos dados caso se atualiza a página diversas vezes.
 
-      var date_input= $("#datetimepicker1").val()
-      console.log(date_input);
 
       var pacientId = $("#select_pacients").val();  //adiciona os valores selecionados nas barras de seleção para as variaveis (paciente e tipo de visualização)
       var optTipoDados = $("#select_pageselect").val();
@@ -559,10 +557,12 @@ $("#btn_GerarGraf").on('click', function () {
   var MGS = $("#select_minigameType").val();
   var DS = $("#select_Device").val();
 
-  var D1=$("#datetimepicker1").data();
-  var D2=$("#datetimepicker2").data();
-  //var D11 = Date.parse(D1);
-//console.log(D11);
+  var D1dma=$("#datetimepicker1").data();
+  var D2dma=$("#datetimepicker2").data();
+  var D1split = D1dma.date.split('/');
+  var D1parse = Date.parse(D1split[1]+"/"+D1split[0]+"/"+D1split[2]);
+  var D2split = D2dma.date.split('/');
+  var D2parse = Date.parse(D2split[1]+"/"+D2split[0]+"/"+D2split[2]);
 
 $.ajax({
   url: "https://blueapi.azurewebsites.net/api/pacients/5eb48243ca979a1f907f9fa1/minigames",
