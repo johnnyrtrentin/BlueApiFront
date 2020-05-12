@@ -1,137 +1,26 @@
-page.base('/');
+import Observable from './Observable.js';
 
-page('/', dashboard);
-page('dashboard', dashboard);
+window.API_ENDPOINT = "http://localhost:7071/api/";
 
-page('token', token);
+const pacientsSelectObservers = new Observable();
 
-page('minigames', minigames);
-page('minigames/minigamesHistorico', minigamesHistorico);
+$(document).ready(function () {
+    $('#modalUser').load("./shared/modalUser.html", function(){});
+    $('#header').load("./shared/header.html", function () {
+        var userRole = JSON.parse(sessionStorage.getItem('userCredentials')).role;
+        if (userRole == "User") {
+            var el = document.getElementById('pacient-select-container');
+            el.parentNode.removeChild(el);
+            el = document.getElementById('pacient-token-option');
+            el.parentNode.removeChild(el);
+        }
+        else {
+            document.getElementById('pacient-select').addEventListener('change', function () {
+                pacientsSelectObservers.notify(this.options[this.selectedIndex].value);
+            });
+        }
 
-page('plataforma', plataforma);
-page('plataforma/plataformaFase', plataformaFase);
-page('plataforma/plataformaHistorico', plataformaHistorico);
-
-page('calibracao', calibracao);
-page('calibracao/calibracaoHistorico', calibracaoHistorico);
-
-page('login', login);
-
-page('logout', logout);
-
-page('cadastro', cadastro);
-
-page('*', notfound);
-
-page(decodeURLComponents = false);
-
-function dashboard() {
-    if (!isAuthenticated()) {
-        page.redirect('/login');
-    }
-    $('#main-content').load("./views/dashboard.html");
-}
-
-function token() {
-    if (!isAuthenticated()) {
-        page.redirect('/login');
-    }
-    $('#main-content').load("./views/token.html");
-}
-
-function notfound() {
-    if (!isAuthenticated()) {
-        page.redirect('/login');
-    }
-    $('#main-content').load("./views/notFound.html");
-}
-
-function minigames() {
-    if (!isAuthenticated()) {
-        page.redirect('/login');
-    }
-    $('#main-content').load("./views/minigames.html");
-}
-
-function minigamesHistorico() {
-    if (!isAuthenticated()) {
-        page.redirect('/login');
-    }
-    $('#main-content').load("./views/minigamesHistorico.html");
-}
-
-function plataforma() {
-    if (!isAuthenticated()) {
-        page.redirect('/login');
-    }
-    $('#main-content').load("./views/plataforma.html");
-}
-
-function plataformaFase() {
-    if (!isAuthenticated()) {
-        page.redirect('/login');
-    }
-    $('#main-content').load("./views/plataformaFase.html");
-}
-
-function plataformaHistorico() {
-    if (!isAuthenticated()) {
-        page.redirect('/login');
-    }
-    $('#main-content').load("./views/plataformaHistorico.html");
-}
-
-function calibracao() {
-    if (!isAuthenticated()) {
-        page.redirect('/login');
-    }
-    $('#main-content').load("./views/calibracao.html");
-}
-
-function calibracaoHistorico() {
-    if (!isAuthenticated()) {
-        page.redirect('/login');
-    }
-    $('#main-content').load("./views/calibracaoHistorico.html");
-}
-
-function login() {
-    window.location.href = "/login.html";
-}
-
-function logout() {
-    sessionStorage.clear();
-    page.redirect('/login');
-}
-
-function cadastro() {
-    if (!isAuthenticated()) {
-        page.redirect('/login');
-    }
-    $('#main-content').load("./views/calibracaoHistorico.html");
-}
-
-function isAuthenticated() {
-    var storedUserCredentials = sessionStorage.getItem('userCredentials');
-    if (storedUserCredentials == null || userCredentials == 'undefined') {
-        console.log("Storage Null");
-        return false;
-    }
-    var userCredentials = JSON.parse(storedUserCredentials);
-    var isValidCredentials = validateUserCredentials(userCredentials);
-    if (!isValidCredentials)
-        return false;
-    else
-        return true;
-}
-
-function validateUserCredentials(userCredentials) {
-    var keysNeeded = ['fullname', 'gameToken', 'userId', 'authExpirationTime', 'authTime'];
-    var keys = Object.keys(userCredentials);
-    var hasAllKeys = keysNeeded.every(x => keys.indexOf(x) >= 0)
-    return hasAllKeys;
-}
-
-const APP_VARIABLES = {
-    API_ENDPOINT: "http://localhost:7071/api/"
-}
+    });
+    $('#footer').load("./shared/footer.html");
+    $('#sidebar').load("./shared/sidebar.html");
+});

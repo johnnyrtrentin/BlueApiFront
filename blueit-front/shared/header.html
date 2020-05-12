@@ -1,70 +1,115 @@
-<nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
+<nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top
+  shadow">
 
-    <!-- Sidebar Toggle (Topbar) -->
-    <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
-      <i class="fa fa-bars"></i>
-    </button>
+  <!-- Sidebar Toggle (Topbar) -->
+  <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle
+    mr-3">
+    <i class="fa fa-bars"></i>
+  </button>
 
-    <!-- Topbar Search -->
-    <form class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
-      <div class="input-group">
-        <input type="text" class="form-control bg-light border-0 small" placeholder="Pesquisar Paciente..."
-          aria-label="Search" aria-describedby="basic-addon2">
-        <div class="input-group-append">
-          <button class="btn btn-primary" type="button">
-            <i class="fas fa-search fa-sm"></i>
-          </button>
-        </div>
+  <!-- Topbar Search -->
+  <form id="pacient-select-container" class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0
+    mw-100 navbar-search">
+    <div class="form-group row">
+      <label for="pacient-select" class="col-sm-2 col-form-label">Paciente:</label>
+      <div class="col-sm-10">
+        <span id="pacient-select-info">Buscando pacientes... Por favor,
+          aguarde.</span>
+        <select id="pacient-select" style="display:none" class="form-control"
+          data-width="100%" title="Escolha um Paciente...">
+        </select>
       </div>
-    </form>
+    </div>
+  </form>
 
-    <!-- Topbar Navbar -->
-    <ul class="navbar-nav ml-auto">
+  <!-- Topbar Navbar -->
+  <ul class="navbar-nav ml-auto">
 
-      <!-- Nav Item - Search Dropdown (Visible Only XS) -->
-      <li class="nav-item dropdown no-arrow d-sm-none">
-        <a class="nav-link dropdown-toggle" href="#" id="searchDropdown" role="button" data-toggle="dropdown"
-          aria-haspopup="true" aria-expanded="false">
-          <i class="fas fa-search fa-fw"></i>
-        </a>
-        <!-- Dropdown - Messages -->
-        <div class="dropdown-menu dropdown-menu-right p-3 shadow animated--grow-in"
-          aria-labelledby="searchDropdown">
-          <form class="form-inline mr-auto w-100 navbar-search">
-            <div class="input-group">
-              <input type="text" class="form-control bg-light border-0 small" placeholder="Search for..."
-                aria-label="Search" aria-describedby="basic-addon2">
-              <div class="input-group-append">
-                <button class="btn btn-primary" type="button">
-                  <i class="fas fa-search fa-sm"></i>
-                </button>
-              </div>
+    <!-- Nav Item - Search Dropdown (Visible Only XS) -->
+    <li class="nav-item dropdown no-arrow d-sm-none">
+      <a class="nav-link dropdown-toggle" href="#" id="searchDropdown"
+        role="button" data-toggle="dropdown"
+        aria-haspopup="true" aria-expanded="false">
+        <i class="fas fa-search fa-fw"></i>
+      </a>
+      <!-- Dropdown - Messages -->
+      <div class="dropdown-menu dropdown-menu-right p-3 shadow
+        animated--grow-in"
+        aria-labelledby="searchDropdown">
+        <form class="form-inline mr-auto w-100 navbar-search">
+          <div class="input-group">
+            <input type="text" class="form-control bg-light border-0 small"
+              placeholder="Search for..."
+              aria-label="Search" aria-describedby="basic-addon2">
+            <div class="input-group-append">
+              <button class="btn btn-primary" type="button">
+                <i class="fas fa-search fa-sm"></i>
+              </button>
             </div>
-          </form>
-        </div>
-      </li>
+          </div>
+        </form>
+      </div>
+    </li>
 
-      <!-- Nav Item - User Information -->
-      <li class="nav-item dropdown no-arrow">
-        <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown"
-          aria-haspopup="true" aria-expanded="false">
-          <span class="mr-2 d-none d-lg-inline text-gray-600 small">Olá Adam Mews!</span>
+    <!-- Nav Item - User Information -->
+    <li class="nav-item dropdown no-arrow">
+      <a class="nav-link dropdown-toggle" href="#" id="userDropdown"
+        role="button" data-toggle="dropdown"
+        aria-haspopup="true" aria-expanded="false">
+        <span class="mr-2 d-none d-lg-inline text-gray-600 small">Olá Adam Mews!</span>
+      </a>
+      <!-- Dropdown - User Information -->
+      <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
+        aria-labelledby="userDropdown">
+        <a class="dropdown-item" href="token">
+          <i class="fas fa-key fa-sm fa-fw mr-2 text-gray-400"></i>
+          Token de Acesso
         </a>
-        <!-- Dropdown - User Information -->
-        <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
-          <a class="dropdown-item" href="token">
-            <i class="fas fa-key fa-sm fa-fw mr-2 text-gray-400"></i>
-            Token de Acesso
-          </a>
-          <div class="dropdown-divider"></div>
-          <a class="dropdown-item" href="logout" data-toggle="modal" data-target="#logoutModal">
-            <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
-            Sair
-          </a>
-        </div>
-      </li>
+        <div class="dropdown-divider"></div>
+        <a class="dropdown-item" href="logout" data-toggle="modal"
+          data-target="#logoutModal">
+          <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
+          Sair
+        </a>
+      </div>
+    </li>
+
+  </ul>
+
+</nav>
+
+<script>
+  var userRole = JSON.parse(sessionStorage.getItem('userCredentials')).role;
+  if(userRole == "Administrator"){
+    $.ajax({
+      url: API_ENDPOINT + "pacients",
+      type: "GET",
+      dataType: "json",
+      beforeSend: function (r) {
+        r.setRequestHeader("GameToken", JSON.parse(sessionStorage.getItem('userCredentials')).gameToken);
+      },
+      success: function (d) {
+        document.getElementById('pacient-select-info').style.display = "none";
+
+        var sel = document.getElementById('pacient-select');
+        sel.style.display = "block";
+        
+        var pacientInfos = d.data.map(x=> ({nome: x.name, pacientId: x._id})); 
+        //https://stackoverflow.com/a/1129270/10697762 [Sorting by property]
+        pacientInfos.sort((a,b) => (a.nome > b.nome) ? 1 : ((b.nome > a.nome) ? -1 : 0)); 
+        
+        for(var i=0;i<pacientInfos.length;i++){
+          var opt = document.createElement('option');
+          opt.appendChild( document.createTextNode(pacientInfos[i].nome) );
+          opt.value = pacientInfos[i].pacientId; 
+          sel.appendChild(opt); 
+        }
+        $('#pacient-select').selectpicker();
+      },
+      error: function(e){
+        document.getElementById('pacient-select-info').innerText = "Ocorreu um erro! Por favor, atualize a página.";
+      }
+    });
+  }
     
-    </ul>
-
-  </nav>
-
+</script>

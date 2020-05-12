@@ -21,6 +21,9 @@
   <!-- Custom styles for this template-->
   <link href="css/sb-admin-2.css" rel="stylesheet">
 
+  <!-- Favicon -->
+  <link rel="shortcut icon" href="img/favicon.png" />
+
 </head>
 
 <body class="bg-gradient-primary">
@@ -88,13 +91,18 @@
   <!-- Custom scripts for all pages-->
   <script src="js/sb-admin-2.min.js"></script>
 
+  <!-- Block UI-->
+  <script src="vendor/block-ui/jquery.blockUI.min.js"></script>
+
 </body>
 
 <script>
   $('form[name="loginForm"]').on('submit', function(e) {
     e.preventDefault();
+    $('.container').block();
+
     $.ajax({
-      url: "http://localhost:7071/api/LoginAccount",
+      url: "http://localhost:7071/api/" +  "login",
       data: JSON.stringify({
         username: $("#inputUsername").val(),
         password: $("#inputPassword").val()
@@ -104,7 +112,7 @@
       success: function (d) {
           $("#errorForm").append(d.message);
           sessionStorage.setItem('userCredentials', JSON.stringify(d.data));
-
+          $('.container').unblock();
           window.location.pathname = '/';
       },
       error: function(e){
@@ -113,6 +121,7 @@
         var content = document.createTextNode(e.responseJSON.message);
         alertDiv.appendChild(content);
         document.getElementById("errorForm").style.visibility= "visible";
+        $('.container').unblock();
       }
       
     });

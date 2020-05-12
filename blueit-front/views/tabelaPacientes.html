@@ -1,0 +1,60 @@
+<div class="container-fluid">
+
+  <!-- Page Heading -->
+  <div class="d-sm-flex align-items-center justify-content-between mb-4">
+    <h1 class="h3 mb-0 text-gray-800">Dashboard</h1>
+  </div>
+
+  <div class="card shadow mb-4">
+    <div class="card-header py-3">
+      <h6 class="m-0 font-weight-bold text-primary">DataTables Example</h6>
+    </div>
+    <div class="card-body">
+      <div class="table-responsive">
+        <table class="table table-bordered" id="dataTable" width="100%"
+          cellspacing="0">
+          <thead>
+            <tr>
+              <th>Nome</th>
+              <th>Sexo</th>
+              <th>Condição</th>
+              <th>Observações</th>
+            </tr>
+          </thead>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="vendor/datatables/jquery.dataTables.min.js"></script>
+<script src="vendor/datatables/dataTables.bootstrap4.min.js"></script>
+
+<script>
+  $(document).ready(function() {
+  $('#dataTable').DataTable({
+    ajax:{
+      url: window.API_ENDPOINT + "pacients",
+      type: "GET",
+      beforeSend: function (r) {
+        r.setRequestHeader("GameToken", JSON.parse(sessionStorage.getItem('userCredentials')).gameToken);
+      },
+      success: function(d){
+        return d.data;
+      },
+      error: function(j, t, e){
+        return [];
+      },
+      dataSrc: function(d){
+        return d.map(p=> ({name: p.name, sex: p.sex, condition: p.condition, observations:p.observations}))
+      }
+    },
+    columns: [
+            { data: "name" },
+            { data: "sex" },
+            { data: "condition" },
+            { data: "observations" }
+        ]
+  });
+});
+</script>
