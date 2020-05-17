@@ -61,10 +61,10 @@
           small"></span>
       </a>
       <!-- Dropdown - User Information -->
-      <div id="pacient-token-option" class="dropdown-menu dropdown-menu-right
+      <div class="dropdown-menu dropdown-menu-right
         shadow animated--grow-in"
         aria-labelledby="userDropdown">
-        <a class="dropdown-item" href="token">
+        <a id="pacient-token-option" class="dropdown-item" href="token">
           <i class="fas fa-key fa-sm fa-fw mr-2 text-gray-400"></i>
           Token de Acesso
         </a>
@@ -76,7 +76,6 @@
         </a>
       </div>
     </li>
-
   </ul>
 
 </nav>
@@ -85,7 +84,11 @@
   $(document).ready(function() {
     var userCredentials = JSON.parse(sessionStorage.getItem('userCredentials'));
 
-    document.getElementById('userWelcome').appendChild(document.createTextNode("Olá " + userCredentials.fullname + "!"));
+    var el = document.getElementById('userWelcome');
+    var boldEl = document.createElement('strong');
+    var textNode = document.createTextNode("Olá " + userCredentials.fullname + "!"); 
+    boldEl.appendChild(textNode); 
+    el.appendChild(boldEl);
   
     if(userCredentials.role == "Administrator"){
       $.ajax({
@@ -117,10 +120,7 @@
           document.getElementById('pacient-select-info').innerText = "Ocorreu um erro! Por favor, atualize a página.";
         }
       });
-    } else{
-      var el = document.getElementById('pacient-select-container').remove();
     }
-
   });
   
     

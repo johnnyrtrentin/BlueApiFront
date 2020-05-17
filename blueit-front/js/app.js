@@ -17,21 +17,37 @@ $(document).ready(function () {
             el = document.getElementById('pacient-token-option');
             el.parentNode.removeChild(el);
         }
+        else{
+            const selectPacientEl = document.getElementById('pacient-select');
+            selectPacientEl.addEventListener('change', e => {
+                //Get current route declared in route.js
+                var currentPage = page.current
+                switch (currentPage) {
+                    case 'minigames':
+                        initMinigameView(e.target.value);
+                }
+            });
+        }
 
-        const selectPacientEl = document.getElementById('pacient-select');
-        selectPacientEl.addEventListener('change', e => {
-            //Get current route declared in route.js
-            var currentPage = page.current
-            switch (currentPage) {
-                case 'minigames':
-                    initMinigameView(e.target.value);
-            }
-        });
+        
 
     });
     $('#footer').load("./shared/footer.html");
-    $('#sidebar').load("./shared/sidebar.html");
+    $('#sidebar').load("./shared/sidebar.html", function(){
+        var el = document.getElementById('sidebar-pacients-option');
+        el.parentNode.removeChild(el);
+    });
 
+    initHighcharts();
+
+});
+
+function getSessionUserCredentialValue(key) {
+    const userCredentials = JSON.parse(sessionStorage.getItem('userCredentials'));
+    return userCredentials[key];
+}
+
+function initHighcharts() {
     Highcharts.setOptions({
         lang: {
             months: ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'],
@@ -56,11 +72,6 @@ $(document).ready(function () {
             resetZoomTitle: 'Voltar Zoom para nível 1:1',
         }
     });
-});
-
-function getSessionUserCredentialValue(key) {
-    const userCredentials = JSON.parse(sessionStorage.getItem('userCredentials'));
-    return userCredentials[key];
 }
 
 export {

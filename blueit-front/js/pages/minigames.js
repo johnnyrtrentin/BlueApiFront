@@ -4,7 +4,8 @@ import {
 
 function initMinigameView() {
     if (getSessionUserCredentialValue('role') == "User") {
-        callAjax(getSessionUserCredentialValue('userId'));
+        callAjax(getSessionUserCredentialValue('pacientId'));
+        document.getElementById('content-info').style.display = "none";
         initCommonFilters();
     } else if (getSessionUserCredentialValue('role') == "Administrator") {
         if ($("#pacient-select").val() != "") {

@@ -1,9 +1,10 @@
+import { initMinigameView } from './pages/minigames.js';
+import {initDashboardView} from './pages/dashboard.js';
+
 page.base('/');
 
 page('/', dashboard);
 page('dashboard', dashboard);
-
-import { initMinigameView } from './pages/minigames.js';
 
 page('token', token);
 
@@ -33,7 +34,7 @@ function dashboard() {
     if (!isAuthenticated()) {
         page.redirect('/login');
     }
-    $('#main-content').load("./views/dashboard.html");
+    $('#main-content').load("./views/dashboard.html", initDashboardView);
 }
 
 function token() {
