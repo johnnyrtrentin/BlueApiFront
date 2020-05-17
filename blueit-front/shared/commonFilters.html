@@ -1,0 +1,32 @@
+<div class="d-flex">
+    <div class="form-inline">
+        <label class="my-1 mr-2" for="inlineFormCustomSelectPref">Dispositivo</label>
+        <select id="device-name" class="custom-select">
+            <option selected value="Pitaco">Pitaco</option>
+            <option value="Mano">Manovacuômetro</option>
+            <option value="Cinta">Cinta</option>
+        </select>
+
+        <label class="sr-only" for="inlineFormInputGroupUsername2">Data Inicial</label>
+        <div class="form-group">
+            <div class="input-group date" id="dtPickerIni" data-target-input="nearest">
+                <input type="text" class="form-control datetimepicker-input" data-target="#dtPickerIni"/>
+                <div class="input-group-append" data-target="#dtPickerIni" data-toggle="datetimepicker">
+                    <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                </div>
+            </div>
+        </div>
+
+        <label class="sr-only" for="inlineFormInputGroupUsername2">Data Final</label>
+        <div class="form-group">
+            <div class="input-group date" id="dtPickerFim" data-target-input="nearest">
+                <input type="text" class="form-control datetimepicker-input" data-target="#dtPickerFim"/>
+                <div class="input-group-append" data-target="#dtPickerFim" data-toggle="datetimepicker">
+                    <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                </div>
+            </div>
+        </div>
+
+        <button id="btnFiltrar" type="button" class="btn btn-primary mb-2">Filtrar</button>
+    </div>
+</div>

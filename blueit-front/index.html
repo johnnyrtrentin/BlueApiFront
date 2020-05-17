@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-BR">
 
   <head>
     <meta charset="utf-8">
@@ -12,12 +12,21 @@
 
     <title>I Blue It - Menu</title>
 
+    <!-- DataTable CSS -->
+    <link rel="stylesheet" type="text/css"
+      href="./vendor/datatables/dataTables.bootstrap4.min.css">
+
     <!-- Custom fonts for this template-->
     <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet"
       type="text/css">
     <link
       href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
       rel="stylesheet">
+
+    <!-- DatePicker TempusDominus-Bootstrap4 -->
+    <link rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.0.0-alpha14/css/tempusdominus-bootstrap-4.min.css"
+      />
 
     <!-- Custom styles for this template-->
     <link href="css/sb-admin-2.css" rel="stylesheet">
@@ -47,13 +56,12 @@
           <!-- End of Topbar -->
 
           <!-- Begin Page Content -->
-          <section id="main-content">
-          </section>
+          <section id="main-content"></section>
           <!-- End Page Content -->
 
         </div>
-        <!-- End of Main Content -->
 
+        <!-- End of Main Content -->
         <!-- Footer -->
         <div id="footer"></div>
         <!-- End of Footer -->
@@ -72,6 +80,16 @@
     <!-- Logout Modal-->
     <div id="modalUser"></div>
 
+    <!-- Highcharts -->
+    <script src="vendor/highcharts/highcharts.js"></script>
+    <script src="vendor/highcharts/highcharts-more.js"></script>
+    <script src="vendor/highcharts/modules/dumbbell.js"></script>
+    <script src="vendor/highcharts/modules/lollipop.js"></script>
+    <script src="vendor/highcharts/modules/exporting.js"></script>
+    <script src="vendor/highcharts/modules/export-data.js"></script>
+    <script src="vendor/highcharts/modules/accessibility.js"></script>
+
+
     <!-- Bootstrap core JavaScript-->
     <script src="vendor/jquery/jquery.min.js"></script>
     <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
@@ -79,7 +97,15 @@
     <!-- Core plugin JavaScript-->
     <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
 
-    <!-- Custom scripts for all pages-->
+    <!-- Datepicker -->
+    <script type="text/javascript"
+      src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.2/moment.min.js"></script>
+      <script type="text/javascript"
+      src="./vendor/datepicker/locales.js"></script>
+    <script type="text/javascript"
+      src="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.0.1/js/tempusdominus-bootstrap-4.min.js"></script>
+    
+      <!-- Custom scripts for all pages-->
     <script src="js/sb-admin-2.min.js"></script>
 
     <!-- Routing script -->
@@ -95,7 +121,10 @@
     <script type="module" src="js/app.js"></script>
 
     <!-- App router -->
-    <script src="js/router.js"></script>
+    <script type="module" src="js/router.js"></script>
+
+    <!-- Block UI-->
+    <script src="vendor/block-ui/jquery.blockUI.min.js"></script>
 
   </body>
 

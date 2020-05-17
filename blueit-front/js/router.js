@@ -3,6 +3,8 @@ page.base('/');
 page('/', dashboard);
 page('dashboard', dashboard);
 
+import { initMinigameView } from './pages/minigames.js';
+
 page('token', token);
 
 page('minigames', minigames);
@@ -14,6 +16,8 @@ page('plataforma/plataformaHistorico', plataformaHistorico);
 
 page('calibracao', calibracao);
 page('calibracao/calibracaoHistorico', calibracaoHistorico);
+
+page('paciente', paciente);
 
 page('login', login);
 
@@ -50,7 +54,8 @@ function minigames() {
     if (!isAuthenticated()) {
         page.redirect('/login');
     }
-    $('#main-content').load("./views/minigames.html");
+    $('#main-content').load("./views/minigames.html", initMinigameView);
+    ;
 }
 
 function minigamesHistorico() {
@@ -94,6 +99,14 @@ function calibracaoHistorico() {
     }
     $('#main-content').load("./views/calibracaoHistorico.html");
 }
+
+function paciente() {
+    if (!isAuthenticated()) {
+        page.redirect('/login');
+    }
+    $('#main-content').load("./views/registroPaciente.html");
+}
+
 
 function login() {
     window.location.href = "/login.html";
