@@ -1,0 +1,47 @@
+<div class="container-fluid">
+
+    <!-- Page Heading -->
+    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+        <h1 class="h3 mb-0 text-gray-800">Minigames - Comparativos</h1>
+    </div>
+
+    <div id="content-info" class="align-items-center justify-content-between
+          mb-4">
+        <h5 class="mb-0 text-warning">Selecione um paciente para realizar comparações!</h3>
+    </div>
+
+    <div id="minigamesComparativos-main-container" style="display: none;">
+        <div class="d-sm-flex mb-4" id="compare-filters"></div>
+        <div class="d-sm-flex mb-0" id="minigames-filters">
+			<div class="form-row mb-2">
+				<div class="col-auto">
+					<label for="inlineFormCustomSelectPref">Minigame:</label>
+					<select id="minigame-name" class="custom-select">
+						<option selected value="CakeGame">Velas no Bolo</option>
+						<option value="WaterGame">Copo D'Água</option>
+					</select>
+                </div>
+                <div class="col-auto">
+                    <label for="device-name">Dispositivo</label>
+                    <select id="device-name" class="custom-select">
+                        <option selected value="Pitaco">Pitaco</option>
+                        <option value="Mano">Manovacuômetro</option>
+                        <option value="Cinta">Cinta</option>
+                    </select>
+                </div>
+            </div>
+            
+		</div>
+        <button id="btnFiltrar" type="button" class="btn btn-primary mb-4">Filtrar</button> 
+
+        <div id="plot-info" class="align-items-center justify-content-between
+          mb-4" style="display: none;">
+            <h5 class="mb-1 text-warning">Não foram encontrados registros com estes filtros!</h3>
+        </div>
+
+        <div id="minigamesCompare-chart-container" style="display: none;"></div>
+    </div>
+
+</div>
+
+<script type="module" src="./../js/pages/minigamesComparativos.js"></script>

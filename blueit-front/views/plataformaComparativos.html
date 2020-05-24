@@ -1,0 +1,64 @@
+<div class="container-fluid">
+
+    <!-- Page Heading -->
+    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+        <h1 class="h3 mb-0 text-gray-800">Plataforma - Comparativos</h1>
+    </div>
+
+    <div id="content-info" class="align-items-center justify-content-between
+          mb-4">
+        <h5 class="mb-0 text-warning">Selecione um paciente para realizar comparações!</h3>
+    </div>
+
+    <div id="plataformaComparativos-main-container" style="display: none;">
+        <div class="d-sm-flex mb-4" id="compare-filters"></div>
+        <div class="d-sm-flex mb-0" id="plataform-filters">
+            <div class="form-row mb-2">
+                <div class="col-auto">
+                    <label class="my-1 mr-2" for="inlineFormCustomSelectPref">Fase:</label>
+                    <select id="calibration-exercise" class="custom-select">
+                        <option selected value="">Todos</option>
+                        <option value="1">1</option>
+                        <option value="1">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                    </select>
+                </div>
+                <div class="col-auto">
+                    <label class="my-1 mr-2" for="inlineFormCustomSelectPref">Nível:</label>
+                    <select id="calibration-exercise" class="custom-select">
+                        <option selected value="">Todos</option>
+                        <option value="1">1</option>
+                        <option value="1">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                        <option value="6">6</option>
+                        <option value="7">7</option>
+                        <option value="8">8</option>
+                        <option value="9">9</option>
+                    </select>
+                </div>
+                <div class="col-md-4 mb-1">
+                    <label for="device-name">Dispositivo</label>
+                    <select id="device-name" class="custom-select">
+                        <option selected value="Pitaco">Pitaco</option>
+                        <option value="Mano">Manovacuômetro</option>
+                        <option value="Cinta">Cinta</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+        <button id="btnFiltrar" type="button" class="btn btn-primary mb-4">Filtrar</button> 
+
+        <div id="plot-info" class="align-items-center justify-content-between
+          mb-4" style="display: none;">
+            <h5 class="mb-1 text-warning">Não foram encontrados registros com estes filtros!</h3>
+        </div>
+
+        <div id="minigamesCompare-chart-container" style="display: none;"></div>
+    </div>
+
+</div>
+
+<script type="module" src="./../js/pages/plataformaComparativos.js"></script>

@@ -74,7 +74,7 @@
 
   $("#btnGenerateToken").on("click", function(e){
     $.ajax({
-      url: APP_VARIABLES.API_ENDPOINT + "CreateGameToken",
+      url: window.API_ENDPOINT + "/CreateGameToken",
       data: JSON.stringify({
         userId: JSON.parse(sessionStorage.getItem('userCredentials')).userId,
       }),

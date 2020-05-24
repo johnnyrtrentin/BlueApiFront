@@ -10998,3 +10998,19 @@ body.sidebar-toggled footer.sticky-footer {
   width: 100%;
 }
 
+#dtPickerIni > div > ul > li.show > div > div.datepicker-days > table > tbody > tr > td:not(.disabled):not(.active) {
+  color: #000;
+}
+
+#dtPickerIni > div > ul > li.show > div > div.datepicker-days > table {
+  color: #000;
+}
+
+#dtPickerFim > div > ul > li.show > div > div.datepicker-days > table > tbody > tr > td:not(.disabled):not(.active) {
+  color: #000;
+}
+
+#dtPickerFim > div > ul > li.show > div > div.datepicker-days > table {
+  color: #000;
+}
+

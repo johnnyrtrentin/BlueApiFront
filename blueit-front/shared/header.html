@@ -92,7 +92,7 @@
   
     if(userCredentials.role == "Administrator"){
       $.ajax({
-        url: API_ENDPOINT + "pacients",
+        url: `${window.API_ENDPOINT}/pacients?sort=asc`,
         type: "GET",
         dataType: "json",
         beforeSend: function (r) {
@@ -106,7 +106,7 @@
           
           var pacientInfos = d.data.map(x=> ({nome: x.name, pacientId: x._id})); 
           //https://stackoverflow.com/a/1129270/10697762 [Sorting by property]
-          pacientInfos.sort((a,b) => (a.nome > b.nome) ? 1 : ((b.nome > a.nome) ? -1 : 0)); 
+          //pacientInfos.sort((a,b) => (a.nome > b.nome) ? 1 : ((b.nome > a.nome) ? -1 : 0)); 
           
           for(var i=0;i<pacientInfos.length;i++){
             var opt = document.createElement('option');

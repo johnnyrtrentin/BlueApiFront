@@ -2,7 +2,7 @@ import {
     getSessionUserCredentialValue
 } from './../app.js';
 
-function initCalibrationView() {
+function initPlataformView() {
 
     $('#content-filters').load("./../shared/commonFilters.html", function () {
         $('#dtPickerIni').datetimepicker({
@@ -22,7 +22,6 @@ function initCalibrationView() {
             var filterObj = {};
 
             filterObj.gameDevice = $("#device-name").val();
-            filterObj.calibrationExercise = $("#calibration-exercise").val()
 
             if ($("#dtPickerIni").data().date != undefined && $("#dtPickerIni").data().date != "") {
                 var dtIni = $("#dtPickerIni").data().date.split('/');
@@ -42,40 +41,41 @@ function initCalibrationView() {
                 }
             }
             let pacientId = getSessionUserCredentialValue('role') == "Administrator" ? $("#pacient-select").val() : getSessionUserCredentialValue('pacientId');
-            callAjaxCalibrationHistory(pacientId, filterObj);
+            callAjaxPlataformHistory(pacientId, filterObj);
 
         });
 
         if (getSessionUserCredentialValue('role') == "User") {
             document.getElementById('content-info').style.display = "none";
-            document.getElementById('calibration-main-container').style.display = '';
-            callAjaxCalibrationInfo(getSessionUserCredentialValue('pacientId'));
+            document.getElementById('plataform-main-container').style.display = '';
+            callAjaxPlataformInfo(getSessionUserCredentialValue('pacientId'));
         } else if (getSessionUserCredentialValue('role') == "Administrator") {
             if ($("#pacient-select").val() != "" && $("#pacient-select").val() != undefined) {
                 document.getElementById('content-info').style.display = "none";
-                document.getElementById('calibration-main-container').style.display = '';
-                callAjaxCalibrationInfo($("#pacient-select").val());
+                document.getElementById('plataform-main-container').style.display = '';
+                callAjaxPlataformInfo($("#pacient-select").val());
             }
         }
     });
 }
 
-function updateCalibrationView() {
+function updatePlataformView() {
     if ($("#pacient-select").val() != "") {
-        document.getElementById('calibration-main-container').style.display = '';
+        document.getElementById('plataform-main-container').style.display = '';
         document.getElementById('content-info').style.display = "none";
-        callAjaxCalibrationInfo($("#pacient-select").val());
+        callAjaxPlataformInfo($("#pacient-select").val());
         clearFiltersAndData();
     }
 }
 
 function clearFiltersAndData() {
-    $('#dtPickerIni').datetimepicker(clear);
-    $('#dtPickerFim').datetimepicker(clear);
+    $('#dtPickerIni').datetimepicker('clear');
+    $('#dtPickerFim').datetimepicker('clear');
+    document.getElementById('plataform-chart-container').style.display = 'none';
     //Limpar Highcharts
 }
 
-function callAjaxCalibrationInfo(userId) {
+function callAjaxPlataformInfo(userId) {
     $('#main-content').block({
         message: `Carregando...`
     });
@@ -88,29 +88,31 @@ function callAjaxCalibrationInfo(userId) {
             r.setRequestHeader("GameToken", getSessionUserCredentialValue('gameToken'));
         },
         success: function (d) {
-            //Valores Pitaco
-            document.getElementById('table-calibracaoPitaco-picoExp').textContent = `${d.data.capacitiesPitaco.expPeakFlow} L/min`;
-            document.getElementById('table-calibracaoPitaco-duracaoExp').textContent = `${d.data.capacitiesPitaco.expFlowDuration} seg`;
-            document.getElementById('table-calibracaoPitaco-picoIns').textContent = `${d.data.capacitiesPitaco.insPeakFlow} L/min`;
-            document.getElementById('table-calibracaoPitaco-duracaoIns').textContent = `${d.data.capacitiesPitaco.insFlowDuration} seg`;
-            document.getElementById('table-calibracaoPitaco-frequencia').textContent = `${d.data.capacitiesPitaco.respiratoryRate} RPM`;
+            debugger
+            // Pontuação Acumulada
+            let el = document.getElementById('card-pontuacao');
+            let textNode = document.createTextNode(d.data.accumulatedScore);
+            el.appendChild(textNode);
 
-            //Valores Mano
-            document.getElementById('table-calibracaoMano-picoExp').textContent = `${d.data.capacitiesMano.expPeakFlow} L/min`;
-            document.getElementById('table-calibracaoMano-duracaoExp').textContent = `${d.data.capacitiesMano.expFlowDuration} seg.`;
-            document.getElementById('table-calibracaoMano-picoIns').textContent = `${d.data.capacitiesMano.insPeakFlow} L/min`;
-            document.getElementById('table-calibracaoMano-duracaoIns').textContent = `${d.data.capacitiesMano.insFlowDuration} seg`;
-            document.getElementById('table-calibracaoMano-frequencia').textContent = `${d.data.capacitiesMano.respiratoryRate} rpm`;
+            // Níveis desbloqueados
+            el = document.getElementById('card-niveis');
+            textNode = document.createTextNode(d.data.unlockedLevels);
+            el.appendChild(textNode);
 
-            //Valores Cinta
-            document.getElementById('table-calibracaoCinta-picoExp').textContent = `${d.data.capacitiesCinta.expPeakFlow} L/min`;
-            document.getElementById('table-calibracaoCinta-duracaoExp').textContent = `${d.data.capacitiesCinta.expFlowDuration} seg`;
-            document.getElementById('table-calibracaoCinta-picoIns').textContent = `${d.data.capacitiesCinta.insPeakFlow} L/min`;
-            document.getElementById('table-calibracaoCinta-duracaoIns').textContent = `${d.data.capacitiesCinta.insFlowDuration} seg`;
-            document.getElementById('table-calibracaoCinta-frequencia').textContent = `${d.data.capacitiesCinta.respiratoryRate} rpm`;
+            // Sessões Jogadas
+            el = document.getElementById('card-jogadas');
+            textNode = document.createTextNode(d.data.playSessionsDone);
+            el.appendChild(textNode);
+
+            var pacientSessionDates = d.data.playSessions.map(function(element){
+                let date = new Date(element.created_at);
+                return date.toLocaleDateString('pt-br', {day: 'numeric', month:'numeric', year:'numeric'});
+            });
+            
+            $('#dtPickerIni').datetimepicker('enabledDates',pacientSessionDates);
+            $('#dtPickerFim').datetimepicker('enabledDates',pacientSessionDates);
 
             $('#main-content').unblock();
-
         },
         error: function () {
             $('#main-content').unblock();
@@ -119,7 +121,7 @@ function callAjaxCalibrationInfo(userId) {
     });
 }
 
-function callAjaxCalibrationHistory(userId, filterObj) {
+function callAjaxPlataformHistory(userId, filterObj) {
     $('#main-content').block({
         message: `Carregando...`
     });
@@ -129,7 +131,7 @@ function callAjaxCalibrationHistory(userId, filterObj) {
         Object.assign(filters, filters, filterObj);
 
     $.ajax({
-        url: `${window.API_ENDPOINT}/pacients/${userId}/calibrations`,
+        url: `${window.API_ENDPOINT}/pacients/${userId}/plataforms/statistics`,
         type: "GET",
         dataType: "json",
         data: filters,
@@ -138,50 +140,31 @@ function callAjaxCalibrationHistory(userId, filterObj) {
         },
         success: function (d) {
 
-            if(d.data.length == 0){
+            if (d.data.length == 0) {
                 document.getElementById('plot-info').style.display = "";
-                document.getElementById('calibration-chart-container').style.display = "none";
-                
+                document.getElementById('plataform-chart-container').style.display = "none";
+
                 $('#main-content').unblock();
                 return;
             }
             document.getElementById('plot-info').style.display = "none";
-            document.getElementById('calibration-chart-container').style.display = "";
-            
+            document.getElementById('plataform-chart-container').style.display = "";
+
             let objValues = d.data.map(function (value) {
                 let obj = {}
-                obj.date = new Date(value.created_at).toLocaleDateString('pt-BR', { year: 'numeric', month: 'numeric', day: 'numeric' });
-                obj.flowValue = value.calibrationValue;
+                obj.date = value.created_at;
+                obj.maxExpFlow = value.maxExpFlow;
+                obj.maxInsFlow = value.maxInsFlow;
                 return obj;
             });
-
+            debugger;
             let groupObjValues = groupByDate(objValues);
-            let values = Object.values(groupObjValues);
+            let maxExpFlows = Object.values(groupObjValues).map(x => x.maxExpFlow);
+            let maxInsFlows = Object.values(groupObjValues).map(x => x.maxInsFlow);
+            let values = { expFlows: maxExpFlows, insFlows: maxInsFlows };
             let dates = Object.keys(groupObjValues);
-            let yTitleText = "";
-            let title = "";
-            switch (d.data[0].calibrationExercise) {
-                case 'ExpiratoryPeak':
-                    title = "Picos Expiratórios";
-                    yTitleText = 'Litros por Minuto';
-                    break;
-                case 'InspiratoryPeak':
-                    title = "Picos Inspiratórios";
-                    yTitleText = 'Litros por Minuto';
-                    break;
-                case 'ExpiratoryDuration':
-                    title = "Durações Expiratórias";
-                    yTitleText = 'Segundos'
-                    break;
-                case 'InspiratoryDuration':
-                    title = "Durações Inspiratórias";
-                    yTitleText = 'Segundos'
-                    break;
-                case 'RespiratoryFrequency':
-                    title = "Frequências Respiratórias";
-                    yTitleText = 'Respirações por minuto';
-                    break;
-            }
+            let yTitleText = "L/min";
+            let title = "Plataforma";
 
             $('#main-content').unblock();
             plot({ values: values, dates: dates, title: title, yTitleText: yTitleText });
@@ -194,9 +177,9 @@ function callAjaxCalibrationHistory(userId, filterObj) {
 }
 
 function plot(plotObj) {
-    var chart = Highcharts.chart('calibration-chart-container', {
+    var chart = Highcharts.chart('plataform-chart-container', {
         chart: {
-            zoomType: 'xy'
+            type: 'column'
         },
         title: {
             text: plotObj.title
@@ -220,18 +203,20 @@ function plot(plotObj) {
                 }
             }
         }],
-        tooltip: {
-            shared: true
-        },
-        series: [{
-            name: 'Fluxo',
-            type: 'spline',
-            lineWidth: 0.5,
-            data: plotObj.values,
-            tooltip: {
-                pointFormat: '<span style="font-weight: bold; color: {series.color}">{series.name}: {point.y:.1f}L/min  </span>'
+        plotOptions: {
+            column: {
+                stacking: 'normal'
             }
-        }
+        },
+        series: [
+            {
+                name: 'Pico Expiratório',
+                data: plotObj.values.expFlows
+            },
+            {
+                name: 'Pico Inspiratório',
+                data: plotObj.values.insFlows
+            }
         ],
         exporting: {
             buttons: {
@@ -255,9 +240,10 @@ function groupByDate(objList) {
     let dateValues = {};
     objList.forEach(element => {
         if (dateValues[element.date]) {
-            dateValues[element.date] = element.flowValue > dateValues[element.date] ? element.flowValue : dateValues[element.date];
+            dateValues[element.date].maxExpFlow = element.maxExpFlow > dateValues[element.date].maxExpFlow ? element.maxExpFlow : dateValues[element.date].maxExpFlow
+            dateValues[element.date].maxInsFlow = element.maxInsFlow < dateValues[element.date].maxInsFlow ? element.maxInsFlow : dateValues[element.date].maxInsFlow;
         } else {
-            dateValues[element.date] = element.flowValue;
+            dateValues[element.date] = { maxExpFlow: element.maxExpFlow, maxInsFlow: element.maxInsFlow };
         }
     });
 
@@ -266,6 +252,6 @@ function groupByDate(objList) {
 
 
 export {
-    initCalibrationView,
-    updateCalibrationView
+    initPlataformView,
+    updatePlataformView
 };

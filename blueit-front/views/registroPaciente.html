@@ -1,95 +1,94 @@
 <div class="container-fluid">
-    <div class="row justify-content-center">
 
-        <div class="col-xl-10 col-lg-12 col-md-9">
+  <!-- Page Heading -->
+  <div class="d-sm-flex align-items-center justify-content-between mb-4">
+    <h1 class="h3 mb-0 text-gray-800">Conta do Paciente</h1>
+  </div>
 
-            <div class="card o-hidden border-0 shadow-lg my-5">
-                <div class="card-body p-0">
-                    <!-- Nested Row within Card Body -->
-                    <div class="row">
-                        <div class="col-lg-6 d-none d-lg-block bg-login-image"></div>
-                        <div class="col-lg-6">
-                            <div class="p-5">
-                                <div class="text-center">
-                                    <h1 class="h4 text-gray-900 mb-4">Conta do
-                                        Paciente</h1>
-                                </div>
-                                <div id="errorForm" class="alert alert-danger"
-                                    role="alert"
-                                    style="visibility:hidden">
-                                </div>
-                                <form class="user" name="registerForm" method="POST">
-                                    <div class="form-group">
-                                      <input type="hidden" class="form-control form-control-user"
-                                        id="inputFullname" placeholder="Nome Completo">
-                                      <div class="invalid-tooltip">
-                                        Informe o seu nome.
-                                      </div>
-                                    </div>
-                                    <div class="form-group">
-                                      <input type="text" class="form-control form-control-user"
-                                        id="inputUsername" placeholder="Nome de Usuário" required>
-                                      <div class="invalid-tooltip">
-                                        Informe um nome de usuário.
-                                      </div>
-                                    </div>
-                                    <div class="form-group">
-                                      <input type="password" class="form-control
-                                        form-control-user" id="inputPassword" placeholder="Senha"
-                                        required>
-                                      <div class="invalid-tooltip">
-                                        Informe uma senha.
-                                      </div>
-                                    </div>
-                                    <button type="submit" class="btn btn-primary btn-user
-                                      btn-block">Criar Conta</button>
-                                    <hr>
-                                  </form>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+  <div id="content-info" class="align-items-center justify-content-between
+  mb-4">
+    <h5 class="mb-0 text-warning">Selecione um paciente para visualizar seus
+      dados!</h3>
+  </div>
 
-        </div>
+  <div id="registroPaciente-main-container" style="display: none;">
 
+    <div id="errorForm" class="alert alert-danger" role="alert" style="visibility:hidden">
     </div>
+
+    <div class="row justify-content-center">
+      <div class="col-lg-6">
+        <div class="card-body p-0">
+          <div class="p-0">
+            <form name="registerForm" class="user text-center border border-light p-5" method="POST">
+
+              <h1 class="h4 text-gray-900 mb-4">Conta do
+                Paciente</h1>
+
+              <div class="form-group">
+                <input type="text" class="form-control form-control-user" id="inputUsername"
+                  placeholder="Nome de Usuário" required>
+                <div class="invalid-tooltip">
+                  Informe um nome de usuário.
+                </div>
+              </div>
+              <div class="form-group">
+                <input type="text" class="form-control
+                              form-control-user" id="inputPassword" placeholder="Senha" required>
+                <div class="invalid-tooltip">
+                  Informe uma senha.
+                </div>
+              </div>
+
+              <button type="submit" id='btnCriarContaPaciente' class="btn btn-primary btn-user
+                                      btn-block">Criar Conta</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
 </div>
 
 <script>
-    $('form[name="registerForm"]').on('submit', function(e) {
-      e.preventDefault();
-      $('.container').block({message:`Carregando...`});
-  
-      $.ajax({
-        url: API_ENDPOINT +  "register",
-        data: JSON.stringify({
-          fullname: getSessionUserCredentialValue('fullname'),
-          username: $("#inputUsername").val(),
-          password: $("#inputPassword").val(),
-          role: 'User',
-          pacientId: getSessionUserCredentialValue('pacientId'),
-          gameToken: getSessionUserCredentialValue('gameToken')
-        }),
-        type: "POST",
-        dataType: "json",
-        success: function (d) {
-          var alertDiv = document.getElementById("errorForm");
-          alertDiv.innerHTML = "";
-          var content = document.createTextNode(e.responseJSON.message);
-          alertDiv.appendChild(content);
-          document.getElementById("errorForm").style.visibility= "visible";
-          $('.container').unblock();
-          window.location.pathname = '/';
-        },
-        error: function(e){
-          var alertDiv = document.getElementById("errorForm");
-          alertDiv.innerHTML = "";
-          var content = document.createTextNode(e.responseJSON.message);
-          alertDiv.appendChild(content);
-          document.getElementById("errorForm").style.visibility= "visible";
-          $('.container').unblock();
-        }
-      });
+  $('form[name="registerForm"]').on('submit', function (e) {
+    e.preventDefault();
+    $('#main-content').block({
+        message: `Carregando...`
     });
-  </script>
+debugger
+    $.ajax({
+      url: API_ENDPOINT + "/register",
+      data: JSON.stringify({
+        fullname: $('#pacient-select').find('option:selected').text(),
+        username: $("#inputUsername").val(),
+        password: $("#inputPassword").val(),
+        role: 'User',
+        pacientId: $("#pacient-select").val(),
+        gameToken: JSON.parse(sessionStorage.getItem('userCredentials')).gameToken
+      }),
+      type: "POST",
+      dataType: "json",
+      success: function (d) {
+        debugger
+        var alertDiv = document.getElementById("errorForm");
+        alertDiv.innerHTML = "";
+        var content = document.createTextNode(d.message);
+        alertDiv.appendChild(content);
+        document.getElementById("errorForm").style.visibility = "visible";
+        $('#main-content').unblock();
+      },
+      error: function (e) {
+        debugger
+        var alertDiv = document.getElementById("errorForm");
+        alertDiv.innerHTML = "";
+        var content = document.createTextNode(e.responseJSON.message);
+        alertDiv.appendChild(content);
+        document.getElementById("errorForm").style.visibility = "visible";
+        $('#main-content').unblock();
+      }
+    });
+  });
+</script>

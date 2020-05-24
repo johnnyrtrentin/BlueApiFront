@@ -8,9 +8,29 @@
 		<h5 class="mb-0 text-warning">Selecione um paciente para visualizar seus dados!</h3>
 	</div>
 
-	<div class="d-sm-flex mb-4" id="content-filters"></div>
 
-<div id="minigame-main-container"></div>
+	<div id="minigame-main-container" style="display: none;">
+		<div class="d-sm-flex mb-0" id="content-filters"></div>
+		<div class="d-sm-flex mb-0" id="minigames-filters">
+			<div class="form-row mb-2">
+				<div class="col-auto">
+					<label for="inlineFormCustomSelectPref">Minigame:</label>
+					<select id="minigame-name" class="custom-select">
+						<option selected value="CakeGame">Velas no Bolo</option>
+						<option value="WaterGame">Copo D'Água</option>
+					</select>
+				</div>
+			</div>
+		</div>
+		<button id="btnFiltrar" type="button" class="btn btn-primary mb-4">Filtrar</button>
+
+		<div id="plot-info" class="align-items-center justify-content-between
+        mb-4" style="display: none;">
+			<h5 class="mb-1 text-warning">Não foram encontrados registros com estes filtros!</h3>
+		</div>
+		
+		<div id="minigame-chart-container"></div>
+	</div>
 
 </div>
 

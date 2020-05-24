@@ -1,14 +1,17 @@
 import Observable from './Observable.js';
-import {
-    initMinigameView
-} from './pages/minigames.js';
+import { updateMinigameView } from './pages/minigames.js';
+import { updateDashboardView } from './pages/dashboard.js';
+import { updateRegistroPacienteView } from './pages/registroPaciente.js';
+import { updateCalibrationView } from './pages/calibracao.js';
+import { updatePlataformView } from './pages/plataforma.js';
 
-window.API_ENDPOINT = "http://localhost:7071/api/";
+
+window.API_ENDPOINT = "http://localhost:7071/api";
 
 $('#datetimepicker1').datetimepicker();
 
 $(document).ready(function () {
-    $('#modalUser').load("./shared/modalUser.html", function () {});
+    $('#modalUser').load("./shared/modalUser.html", function () { });
     $('#header').load("./shared/header.html", function () {
         var userRole = JSON.parse(sessionStorage.getItem('userCredentials')).role;
         if (userRole == "User") {
@@ -17,28 +20,52 @@ $(document).ready(function () {
             el = document.getElementById('pacient-token-option');
             el.parentNode.removeChild(el);
         }
-        else{
+        else {
             const selectPacientEl = document.getElementById('pacient-select');
             selectPacientEl.addEventListener('change', e => {
                 //Get current route declared in route.js
                 var currentPage = page.current
+                    ;
                 switch (currentPage) {
+                    case '/':
+                    case 'dashboard':
+                        updateDashboardView(e.target.value);
+                        break;
                     case 'minigames':
-                        initMinigameView(e.target.value);
+                        updateMinigameView(e.target.value);
+                        initHighcharts();
+                        break;
+                    case 'minigames/minigamesComparativos':
+                        break;
+                    case 'calibracao':
+                        updateCalibrationView(e.target.value);
+                        break;
+                    case 'calibracao/calibracaoComparativos':
+                        break;
+                    case 'plataforma':
+                        updatePlataformView(e.target.value);
+                        break;
+                    case 'plataforma/plataformaComparativos':
+                        break;
+                    case 'registroContaPaciente':
+                        updateRegistroPacienteView(e.target.value);
+                        break;
                 }
             });
         }
 
-        
+
 
     });
     $('#footer').load("./shared/footer.html");
-    $('#sidebar').load("./shared/sidebar.html", function(){
-        var el = document.getElementById('sidebar-pacients-option');
-        el.parentNode.removeChild(el);
+    $('#sidebar').load("./shared/sidebar.html", function () {
+        if (getSessionUserCredentialValue('role') == 'User') {
+            var el = document.getElementById('sidebar-pacients-option');
+            el.parentNode.removeChild(el);
+        }
     });
 
-    initHighcharts();
+
 
 });
 

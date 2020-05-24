@@ -1,5 +1,11 @@
+import { initCalibrationView } from './pages/calibracao.js';
+import { initRegistroPacienteView } from './pages/registroPaciente.js';
 import { initMinigameView } from './pages/minigames.js';
-import {initDashboardView} from './pages/dashboard.js';
+import { initDashboardView } from './pages/dashboard.js';
+import { initPlataformView } from './pages/plataforma.js';
+import { initMinigameCompareView } from './pages/minigamesComparativos.js';
+import { initCalibrationCompareView} from './pages/calibracaoComparativos.js';
+import { initPlataformCompareView} from './pages/plataformaComparativos.js';
 
 page.base('/');
 
@@ -9,16 +15,15 @@ page('dashboard', dashboard);
 page('token', token);
 
 page('minigames', minigames);
-page('minigames/minigamesHistorico', minigamesHistorico);
+page('minigames/minigamesComparativos', minigamesComparativos);
 
 page('plataforma', plataforma);
-page('plataforma/plataformaFase', plataformaFase);
-page('plataforma/plataformaHistorico', plataformaHistorico);
+page('plataforma/plataformaComparativos', plataformaComparativos);
 
 page('calibracao', calibracao);
-page('calibracao/calibracaoHistorico', calibracaoHistorico);
+page('calibracao/calibracaoComparativos', calibracaoComparativos);
 
-page('paciente', paciente);
+page('registroContaPaciente', registroContaPaciente);
 
 page('login', login);
 
@@ -28,84 +33,76 @@ page('cadastro', cadastro);
 
 page('*', notfound);
 
-page({decodeURLComponents:false})
+page({ decodeURLComponents: false })
 
 function dashboard() {
     if (!isAuthenticated()) {
         page.redirect('/login');
     }
-    $('#main-content').load("./views/dashboard.html", initDashboardView);
+    $('#main-content').load("/views/dashboard.html", initDashboardView);
 }
 
 function token() {
     if (!isAuthenticated()) {
         page.redirect('/login');
     }
-    $('#main-content').load("./views/token.html");
+    $('#main-content').load("/views/token.html");
 }
 
 function notfound() {
     if (!isAuthenticated()) {
         page.redirect('/login');
     }
-    $('#main-content').load("./views/notFound.html");
+    $('#main-content').load("/views/notFound.html");
 }
 
 function minigames() {
     if (!isAuthenticated()) {
         page.redirect('/login');
     }
-    $('#main-content').load("./views/minigames.html", initMinigameView);
-    ;
+    $('#main-content').load("/views/minigames.html", initMinigameView);
 }
 
-function minigamesHistorico() {
+function minigamesComparativos() {
     if (!isAuthenticated()) {
         page.redirect('/login');
     }
-    $('#main-content').load("./views/minigamesHistorico.html");
+    $('#main-content').load('/views/minigamesComparativos.html', initMinigameCompareView);
 }
 
 function plataforma() {
     if (!isAuthenticated()) {
         page.redirect('/login');
     }
-    $('#main-content').load("./views/plataforma.html");
+    $('#main-content').load("/views/plataforma.html", initPlataformView);
 }
 
-function plataformaFase() {
+function plataformaComparativos() {
     if (!isAuthenticated()) {
         page.redirect('/login');
     }
-    $('#main-content').load("./views/plataformaFase.html");
-}
-
-function plataformaHistorico() {
-    if (!isAuthenticated()) {
-        page.redirect('/login');
-    }
-    $('#main-content').load("./views/plataformaHistorico.html");
+    $('#main-content').load("/views/plataformaComparativos.html", initPlataformCompareView);
 }
 
 function calibracao() {
     if (!isAuthenticated()) {
         page.redirect('/login');
     }
-    $('#main-content').load("./views/calibracao.html");
+    $('#main-content').load("/views/calibracao.html", initCalibrationView);
 }
 
-function calibracaoHistorico() {
+function calibracaoComparativos() {
     if (!isAuthenticated()) {
         page.redirect('/login');
     }
-    $('#main-content').load("./views/calibracaoHistorico.html");
+    $('#main-content').load("/views/calibracaoComparativos.html", initCalibrationCompareView);
 }
 
-function paciente() {
+function registroContaPaciente() {
     if (!isAuthenticated()) {
         page.redirect('/login');
     }
-    $('#main-content').load("./views/registroPaciente.html");
+    $('#main-content').load("/views/registroPaciente.html", initRegistroPacienteView);
 }
 
 
@@ -122,7 +119,7 @@ function cadastro() {
     if (!isAuthenticated()) {
         page.redirect('/login');
     }
-    $('#main-content').load("./views/calibracaoHistorico.html");
+    $('#main-content').load("./views/calibracaoComparativos.html");
 }
 
 function isAuthenticated() {

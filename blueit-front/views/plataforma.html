@@ -1,0 +1,110 @@
+<div class="container-fluid">
+
+    <!-- Page Heading -->
+    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+        <h1 class="h3 mb-0 text-gray-800">Plataforma - Informações Gerais</h1>
+    </div>
+
+    <div id="content-info" class="align-items-center justify-content-between
+          mb-4">
+        <h5 class="mb-0 text-warning">Selecione um paciente para visualizar seus
+            dados!</h3>
+    </div>
+
+    <div id="plataform-main-container" style="display: none;">
+        <div class="row">
+
+            <!-- Pontuação Acumulada -->
+            <div class="col-xl-3 col-md-6 mb-4">
+                <div class="card border-left-primary shadow h-100 py-2">
+                    <div class="card-body">
+                        <div class="row no-gutters align-items-center">
+                            <div class="col mr-2">
+                                <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Pontuação
+                                    Acumulada
+                                </div>
+                                <div id="card-pontuacao" class="h5 mb-0 font-weight-bold text-gray-800"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Níveis Desbloqueados -->
+            <div class="col-xl-3 col-md-6 mb-4">
+                <div class="card border-left-success shadow h-100 py-2">
+                    <div class="card-body">
+                        <div class="row no-gutters align-items-center">
+                            <div class="col mr-2">
+                                <div class="text-xs font-weight-bold text-success text-uppercase mb-1">Níveis
+                                    Desbloqueados</div>
+                                <div id="card-niveis" class="h5 mb-0 font-weight-bold text-gray-800"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Sessões Jogadas -->
+            <div class="col-xl-3 col-md-6 mb-4">
+                <div class="card border-left-success shadow h-100 py-2">
+                    <div class="card-body">
+                        <div class="row no-gutters align-items-center">
+                            <div class="col mr-2">
+                                <div class="text-xs font-weight-bold text-success text-uppercase mb-1">Sessões Jogadas
+                                </div>
+                                <div id="card-jogadas" class="h5 mb-0 font-weight-bold text-gray-800"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="d-sm-flex mb-0" id="content-filters"></div>
+        <div class="d-sm-flex mb-0" id="plataform-filters">
+            <div class="form-row mb-2">
+                <div class="col-auto">
+                    <label class="my-1 mr-2" for="inlineFormCustomSelectPref">Fase:</label>
+                    <select id="calibration-exercise" class="custom-select">
+                        <option selected value="">Todos</option>
+                        <option value="1">1</option>
+                        <option value="1">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                    </select>
+                </div>
+                <div class="col-auto">
+                    <label class="my-1 mr-2" for="inlineFormCustomSelectPref">Nível:</label>
+                    <select id="calibration-exercise" class="custom-select">
+                        <option selected value="">Todos</option>
+                        <option value="1">1</option>
+                        <option value="1">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                        <option value="6">6</option>
+                        <option value="7">7</option>
+                        <option value="8">8</option>
+                        <option value="9">9</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <button id="btnFiltrar" type="button" class="btn btn-primary mb-4">Filtrar</button>
+
+        <div id="plot-info" class="align-items-center justify-content-between
+          mb-4" style="display: none;">
+            <h5 class="mb-1 text-warning">Não foram encontrados registros com estes filtros!</h3>
+        </div>
+
+        <div id="plataform-chart-container" style="display: none;"></div>
+    </div>
+
+
+
+</div>
+
+<script type="module" src="./../js/pages/plataforma.js"></script>

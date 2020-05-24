@@ -3,34 +3,26 @@ import {
 } from './../app.js';
 
 function initMinigameView() {
-    if (getSessionUserCredentialValue('role') == "User") {
-        callAjax(getSessionUserCredentialValue('pacientId'));
-        document.getElementById('content-info').style.display = "none";
-        initCommonFilters();
-    } else if (getSessionUserCredentialValue('role') == "Administrator") {
-        if ($("#pacient-select").val() != "") {
-            document.getElementById('content-info').style.display = "none";
-            callAjax($("#pacient-select").val());
-            initCommonFilters();
-        }
-    }
-}
 
-function initCommonFilters() {
     $('#content-filters').load("./../shared/commonFilters.html", function () {
         $('#dtPickerIni').datetimepicker({
             format: 'DD/MM/YYYY',
-            locale: 'pt-br'
+            locale: 'pt-br',
+            ignoreReadonly: true,
+            allowInputToggle: true
         });
         $('#dtPickerFim').datetimepicker({
-            format: 'DD/MM/YYYY'
+            format: 'DD/MM/YYYY',
+            locale: 'pt-br',
+            ignoreReadonly: true,
+            allowInputToggle: true
         });
-
         $('#btnFiltrar').on('click', function () {
-            //Enviar 
+
             var filterObj = {};
 
             filterObj.devices = $("#device-name").val();
+            filterObj.minigameName = $("#minigame-name").val()
 
             if ($("#dtPickerIni").data().date != undefined && $("#dtPickerIni").data().date != "") {
                 var dtIni = $("#dtPickerIni").data().date.split('/');
@@ -38,7 +30,7 @@ function initCommonFilters() {
 
                 filterObj.dataIni = dtIni[1] + '-' + dtIni[0] + '-' + dtIni[2]
                 if ($("#dtPickerFim").data().date != undefined && $("#dtPickerFim").data().date != "") {
-                    debugger
+
                     var dtFim = $("#dtPickerFim").data().date.split('/');
                     var dtFimTicks = Date.parse(dtFim[1] + "/" + dtFim[0] + "/" + dtFim[2]);
 
@@ -49,52 +41,79 @@ function initCommonFilters() {
                     filterObj.dataFim = dtFim[1] + '-' + dtFim[0] + '-' + dtFim[2];
                 }
             }
+            let pacientId = getSessionUserCredentialValue('role') == "Administrator" ? $("#pacient-select").val() : getSessionUserCredentialValue('pacientId');
+            callAjax(pacientId, filterObj);
 
-            if (getSessionUserCredentialValue('role') == "User") {
-                callAjax(getSessionUserCredentialValue('userId'), filterObj);
-            } else if (getSessionUserCredentialValue('role') == "Administrator") {
-                callAjax($("#pacient-select").val(), filterObj);
-            }
         });
+        if (getSessionUserCredentialValue('role') == "User") {
+            document.getElementById('content-info').style.display = "none";
+            document.getElementById('minigame-main-container').style.display = '';
+            document.getElementById('btnFiltrar').click();
+        } else if (getSessionUserCredentialValue('role') == "Administrator") {
+            if ($("#pacient-select").val() != "" && $("#pacient-select").val() != undefined) {
+                document.getElementById('content-info').style.display = "none";
+                document.getElementById('minigame-main-container').style.display = '';
+                document.getElementById('btnFiltrar').click();
+            }
+        }
     });
+};
+
+function updateMinigameView() {
+    if ($("#pacient-select").val() != "") {
+        document.getElementById('minigame-main-container').style.display = '';
+        document.getElementById('content-info').style.display = "none";
+        document.getElementById('btnFiltrar').click();
+    }
+}
+
+function refreshCommonFilters() {
+    $('#dtPickerIni').datetimepicker(clear);
+    $('#dtPickerFim').datetimepicker(clear);
 }
 
 function callAjax(userId, filterObj) {
     $('#main-content').block({
         message: `Carregando...`
     });
+
+    let filters = { sort: 'asc' };
+    if (filterObj != undefined)
+        Object.assign(filters, filters, filterObj);
+
     $.ajax({
-        url: window.API_ENDPOINT + "pacients/" + userId + "/minigames",
+        url: `${window.API_ENDPOINT}/pacients/${userId}/minigames`,
         type: "GET",
         dataType: "json",
-        data: filterObj,
+        data: filters,
         beforeSend: function (r) {
             r.setRequestHeader("GameToken", getSessionUserCredentialValue('gameToken'));
         },
-        success: function (data) {
-
-            var objValues = {
-                maiores: [],
-                medios: [],
-                menores: []
+        success: function (d) {
+            
+            if(d.data.length == 0){
+                document.getElementById('plot-info').style.display = "";
+                document.getElementById('minigame-chart-container').style.display = "none";
+                
+                $('#main-content').unblock();
+                return;
             }
+            document.getElementById('plot-info').style.display = "none";
+            document.getElementById('minigame-chart-container').style.display = "";
 
-            var values = data.data.map(function (value) {
-                var flowValues = value.flowDataRounds.map(x => x.roundFlowScore).sort(function (a, b) {
-                    return a - b;
-                });
-                objValues.maiores.push(flowValues[2]);
-                objValues.medios.push(flowValues[1]);
-                objValues.menores.push(flowValues[0]);
+            let objValues = d.data.map(function (value) {
+                let obj = {}
+                obj.date = new Date(value.created_at).toLocaleDateString('pt-BR', { year: 'numeric', month: 'numeric', day: 'numeric' });
+                obj.flowValue = value.flowDataRounds.map(x => x.roundFlowScore).sort((a, b) => b - a)[0];
+                return obj;
             });
 
-            var tamEixoX = objValues.maiores.length
-            var ArrayTamX = [];
-            for (var i = 0; i < tamEixoX; i++) {
-                ArrayTamX[i] = (i + 1) + "";
-            }
+            let groupObjValues = groupByDate(objValues);
+            let values = Object.values(groupObjValues);
+            let dates = Object.keys(groupObjValues);
+            
             $('#main-content').unblock();
-            plot(objValues);
+            plot({values: values, dates: dates});
         },
 
         error: function () {
@@ -105,8 +124,8 @@ function callAjax(userId, filterObj) {
     });
 }
 
-function plot(values) {
-    var chart = Highcharts.chart('minigame-main-container', {
+function plot(plotObj) {
+    var chart = Highcharts.chart('minigame-chart-container', {
         chart: {
             zoomType: 'xy'
         },
@@ -114,69 +133,52 @@ function plot(values) {
             text: 'Pico Expiratório minigame'
         },
         xAxis: {
-            min: 1,
-            tickInterval: 1
+            categories: plotObj.dates,
+            tickInterval: 1,
+            labels: { enabled: true }
         },
         yAxis: [{ // Primary yAxis
-                labels: {
-                    format: '{value} L/min',
-                    style: {
-                        color: Highcharts.getOptions().colors[1]
-                    }
-                },
-                title: {
-                    text: 'pico Expiratório',
-                    style: {
-                        color: Highcharts.getOptions().colors[1]
-                    }
+            labels: {
+                format: '{value} L/min',
+                style: {
+                    color: Highcharts.getOptions().colors[1]
                 }
             },
-            { // Secondary yAxis
-                title: {
-                    text: '',
-                    style: {
-                        color: Highcharts.getOptions().colors[0]
-                    }
-                },
-                labels: {
-                    format: '{value}',
-                    style: {
-                        color: Highcharts.getOptions().colors[0]
-                    }
-                },
-                opposite: true
+            title: {
+                text: 'pico Expiratório',
+                style: {
+                    color: Highcharts.getOptions().colors[1]
+                }
             }
+        },
+        { // Secondary yAxis
+            title: {
+                text: '',
+                style: {
+                    color: Highcharts.getOptions().colors[0]
+                }
+            },
+            labels: {
+                format: '{value}',
+                style: {
+                    color: Highcharts.getOptions().colors[0]
+                }
+            },
+            opposite: true
+        }
         ],
         tooltip: {
             shared: true
         },
         series: [{
-                name: 'Maior pico da sessão',
-                type: 'spline',
-                lineWidth: 0.5,
-                data: values.maiores,
-                tooltip: {
-                    pointFormat: '<span style="font-weight: bold; color: {series.color}">{series.name}: {point.y:.1f}L/min  </span>'
-                }
-            },
-            {
-                name: 'Médio pico da sessão',
-                type: 'spline',
-                lineWidth: 0.5,
-                data: values.medios,
-                tooltip: {
-                    pointFormat: '<span style="font-weight: bold; color: {series.color}">{series.name}: {point.y:.1f}L/min  </span>'
-                }
-            },
-            {
-                name: 'Menor pico da sessão',
-                type: 'spline',
-                lineWidth: 0.5,
-                data: values.menores,
-                tooltip: {
-                    pointFormat: '<span style="font-weight: bold; color: {series.color}">{series.name}: {point.y:.1f}L/min  </span>'
-                }
+            name: 'Maior pico da sessão',
+            type: 'spline',
+            lineWidth: 0.5,
+            data: plotObj.values,
+            tooltip: {
+                pointFormat: '<span style="font-weight: bold; color: {series.color}">{series.name}: {point.y:.1f}L/min  </span>'
             }
+        }
         ],
         exporting: {
             buttons: {
@@ -196,6 +198,20 @@ function plot(values) {
     chart.reflow();
 }
 
+function groupByDate(objList){
+    let dateValues = {};
+    objList.forEach(element => {
+        if(dateValues[element.date]){
+            dateValues[element.date] = element.flowValue > dateValues[element.date] ? element.flowValue : dateValues[element.date];
+        }else{
+            dateValues[element.date] = element.flowValue;
+        }
+    });
+    
+    return dateValues;
+}
+
 export {
-    initMinigameView
+    initMinigameView,
+    updateMinigameView
 };
