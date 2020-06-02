@@ -48,12 +48,10 @@ function initMinigameView() {
         if (getSessionUserCredentialValue('role') == "User") {
             document.getElementById('content-info').style.display = "none";
             document.getElementById('minigame-main-container').style.display = '';
-            document.getElementById('btnFiltrar').click();
         } else if (getSessionUserCredentialValue('role') == "Administrator") {
             if ($("#pacient-select").val() != "" && $("#pacient-select").val() != undefined) {
                 document.getElementById('content-info').style.display = "none";
                 document.getElementById('minigame-main-container').style.display = '';
-                document.getElementById('btnFiltrar').click();
             }
         }
     });
@@ -63,7 +61,6 @@ function updateMinigameView() {
     if ($("#pacient-select").val() != "") {
         document.getElementById('minigame-main-container').style.display = '';
         document.getElementById('content-info').style.display = "none";
-        document.getElementById('btnFiltrar').click();
     }
 }
 
@@ -174,7 +171,7 @@ function plot(plotObj) {
             name: 'Maior pico da sessão',
             type: 'spline',
             lineWidth: 0.5,
-            data: plotObj.values,
+            data: [210, 242, 259, 257, 265, 279, 303, 325],
             tooltip: {
                 pointFormat: '<span style="font-weight: bold; color: {series.color}">{series.name}: {point.y:.1f}L/min  </span>'
             }

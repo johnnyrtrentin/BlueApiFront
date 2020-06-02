@@ -88,7 +88,7 @@ function callAjaxPlataformInfo(userId) {
             r.setRequestHeader("GameToken", getSessionUserCredentialValue('gameToken'));
         },
         success: function (d) {
-            debugger
+            
             // Pontuação Acumulada
             let el = document.getElementById('card-pontuacao');
             let textNode = document.createTextNode(d.data.accumulatedScore);
@@ -157,7 +157,7 @@ function callAjaxPlataformHistory(userId, filterObj) {
                 obj.maxInsFlow = value.maxInsFlow;
                 return obj;
             });
-            debugger;
+            ;
             let groupObjValues = groupByDate(objValues);
             let maxExpFlows = Object.values(groupObjValues).map(x => x.maxExpFlow);
             let maxInsFlows = Object.values(groupObjValues).map(x => x.maxInsFlow);
@@ -178,9 +178,7 @@ function callAjaxPlataformHistory(userId, filterObj) {
 
 function plot(plotObj) {
     var chart = Highcharts.chart('plataform-chart-container', {
-        chart: {
-            type: 'column'
-        },
+        
         title: {
             text: plotObj.title
         },

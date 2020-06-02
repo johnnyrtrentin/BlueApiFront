@@ -3,10 +3,10 @@
     <!-- Sidebar - Brand -->
     <a class="sidebar-brand d-flex align-items-center justify-content-center" href="/">
         <div class="sidebar-brand-icon rotate-n-15">
-          <i class="fas fa-gamepad"></i>
+            <i class="fas fa-gamepad"></i>
         </div>
         <div class="sidebar-brand-text mx-3">I Blue It</div>
-      </a>
+    </a>
 
     <!-- Divider -->
     <hr class="sidebar-divider my-0">
@@ -25,6 +25,22 @@
     <div class="sidebar-heading">
         Gráficos
     </div>
+
+    <!-- Nav Item - Utilities Collapse Menu -->
+    <li class="nav-item">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseCalibracao"
+            aria-expanded="true" aria-controls="collapseCalibracao">
+            <span>Calibração</span>
+        </a>
+        <div id="collapseCalibracao" class="collapse" aria-labelledby="headingCalibracao"
+            data-parent="#accordionSidebar">
+            <div class="bg-white py-2 collapse-inner rounded">
+                <h6 class="collapse-header">Dados:</h6>
+                <a class="collapse-item" href="/calibracao">Gerais</a>
+                <!-- <a class="collapse-item" href="/calibracao/calibracaoComparativos">Comparativos</a> -->
+            </div>
+        </div>
+    </li>
 
     <!-- Nav Item - Pages Collapse Menu -->
     <li class="nav-item">
@@ -57,37 +73,30 @@
         </div>
     </li>
 
-    <!-- Nav Item - Utilities Collapse Menu -->
-    <li class="nav-item">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseCalibracao"
-            aria-expanded="true" aria-controls="collapseCalibracao">
-            <span>Calibração</span>
-        </a>
-        <div id="collapseCalibracao" class="collapse" aria-labelledby="headingCalibracao"
-            data-parent="#accordionSidebar">
-            <div class="bg-white py-2 collapse-inner rounded">
-                <h6 class="collapse-header">Dados:</h6>
-                <a class="collapse-item" href="/calibracao">Gerais</a>
-                <a class="collapse-item" href="/calibracao/calibracaoComparativos">Comparativos</a>
-            </div> 
-        </div>
-    </li>
+    <div id="sidebar-pacients-option">
+        <!-- Divider -->
+        <hr class="sidebar-divider">
 
-    <!-- Nav Item - Utilities Collapse Menu -->
-    <li id="sidebar-pacients-option" class="nav-item">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePacientes"
-            aria-expanded="true" aria-controls="collapsePacientes">
-            <span>Pacientes</span>
-        </a>
-        <div id="collapsePacientes" class="collapse" aria-labelledby="headingPacientes"
-            data-parent="#accordionSidebar">
-            <div class="bg-white py-2 collapse-inner rounded">
-                <h6 class="collapse-header">Registros:</h6>
-                <a class="collapse-item" href="/registroContaPaciente">Conta de Acesso</a>
-            </div> 
+        <!-- Heading -->
+        <div class="sidebar-heading">
+            Sistema
         </div>
-    </li>
-    
+
+        <!-- Nav Item - Utilities Collapse Menu -->
+        <li class="nav-item">
+            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePacientes"
+                aria-expanded="true" aria-controls="collapsePacientes">
+                <span>Pacientes</span>
+            </a>
+            <div id="collapsePacientes" class="collapse" aria-labelledby="headingPacientes"
+                data-parent="#accordionSidebar">
+                <div class="bg-white py-2 collapse-inner rounded">
+                    <h6 class="collapse-header">Registros:</h6>
+                    <a class="collapse-item" href="/registroContaPaciente">Conta de Acesso</a>
+                </div>
+            </div>
+        </li>
+    </div>
 
     <!-- Divider -->
     <hr class="sidebar-divider d-none d-md-block">

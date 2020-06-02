@@ -41,8 +41,9 @@ function callAjax(userId) {
             document.getElementById('table-dadosGerais-sexo').textContent = d.data.sex == 'Male' ? 'Masculino' : 'Feminino';
             document.getElementById('table-dadosGerais-condicao').textContent = translateCondition(d.data.condition);
             document.getElementById('table-dadosGerais-dtNascimento').textContent = new Date(d.data.birthday).toLocaleDateString('pt-BR', { year: 'numeric', month: 'numeric', day: 'numeric' });
-            document.getElementById('table-dadosGerais-peso').textContent = d.data.weight;
-            document.getElementById('table-dadosGerais-altura').textContent = d.data.height;
+            document.getElementById('table-dadosGerais-peso').textContent = d.data.weight + ' kg';
+            document.getElementById('table-dadosGerais-altura').textContent = d.data.height + ' cm';
+            document.getElementById('table-dadosGerais-observacoes').textContent = d.data.observations == 'None' ? '-' : d.data.observations;
 
             $('#main-content').unblock();
         },
