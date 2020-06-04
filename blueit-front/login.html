@@ -106,7 +106,7 @@
     $('.container').block({message:`Carregando...`});
 
     $.ajax({
-      url: "http://localhost:7071/api/" +  "login",
+      url: "https://blueapi.azurewebsites.net/api/" +  "login",
       data: JSON.stringify({
         username: $("#inputUsername").val(),
         password: $("#inputPassword").val()

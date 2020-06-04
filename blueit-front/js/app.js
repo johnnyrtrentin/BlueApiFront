@@ -10,7 +10,7 @@ import { updatePlataformView } from './pages/plataforma.js';
 import { updatePlataformCompareView } from './pages/plataformaComparativos.js';
 
 
-window.API_ENDPOINT = "http://localhost:7071/api";
+window.API_ENDPOINT = "https://blueapi.azurewebsites.net/api";
 
 $('#datetimepicker1').datetimepicker();
 
