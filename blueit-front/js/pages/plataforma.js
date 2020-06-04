@@ -9,13 +9,15 @@ function initPlataformView() {
             format: 'DD/MM/YYYY',
             locale: 'pt-br',
             ignoreReadonly: true,
-            allowInputToggle: true
+            allowInputToggle: true,
+            useCurrent: false
         });
         $('#dtPickerFim').datetimepicker({
             format: 'DD/MM/YYYY',
             locale: 'pt-br',
             ignoreReadonly: true,
-            allowInputToggle: true
+            allowInputToggle: true,
+            useCurrent: false
         });
         $('#btnFiltrar').on('click', function () {
 

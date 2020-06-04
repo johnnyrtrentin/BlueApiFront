@@ -12,7 +12,7 @@
     form-inline mr-auto ml-md-3 my-2 my-md-0
     mw-100 navbar-search">
     <div class="form-group row">
-      <label for="pacient-select" class="col-sm-2 col-form-label">Paciente:</label>
+      <label id="pacient-select_label" for="pacient-select" class="col-sm-2 col-form-label">Paciente:</label>
       <div class="col-sm-10">
         <span id="pacient-select-info">Buscando pacientes... Por favor,
           aguarde.</span>
@@ -74,52 +74,4 @@
 
 </nav>
 
-<script>
-  $(document).ready(function () {
-    var userCredentials = JSON.parse(sessionStorage.getItem('userCredentials'));
-
-    var el = document.getElementById('userWelcome');
-    var boldEl = document.createElement('strong');
-    var textNode = document.createTextNode("Olá " + userCredentials.fullname + "!");
-    boldEl.appendChild(textNode);
-    el.appendChild(boldEl);
-
-    if (userCredentials.role == "Administrator") {
-      if (JSON.parse(sessionStorage.getItem('userCredentials')).gameToken == ''){
-        document.getElementById('pacient-select-info').innerText = "Você ainda não gerou uma chave de acesso!.";
-        return;
-      }
-      $.ajax({
-        url: `${window.API_ENDPOINT}/pacients?sort=asc`,
-        type: "GET",
-        dataType: "json",
-        beforeSend: function (r) {
-          r.setRequestHeader("GameToken", JSON.parse(sessionStorage.getItem('userCredentials')).gameToken);
-        },
-        success: function (d) {
-          document.getElementById('pacient-select-info').style.display = "none";
-
-          var sel = document.getElementById('pacient-select');
-          sel.style.display = "block";
-
-          var pacientInfos = d.data.map(x => ({ nome: x.name, pacientId: x._id }));
-          //https://stackoverflow.com/a/1129270/10697762 [Sorting by property]
-          //pacientInfos.sort((a,b) => (a.nome > b.nome) ? 1 : ((b.nome > a.nome) ? -1 : 0)); 
-
-          for (var i = 0; i < pacientInfos.length; i++) {
-            var opt = document.createElement('option');
-            opt.appendChild(document.createTextNode(pacientInfos[i].nome));
-            opt.value = pacientInfos[i].pacientId;
-            sel.appendChild(opt);
-          }
-          $('#pacient-select').selectpicker();
-        },
-        error: function (e) {
-          document.getElementById('pacient-select-info').innerText = "Ocorreu um erro! Por favor, atualize a página.";
-        }
-      });
-    }
-  });
-
-
-</script>
+<script type="module" src="./../js/pages/header.js"></script>

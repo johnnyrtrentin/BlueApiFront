@@ -9,13 +9,15 @@ function initMinigameView() {
             format: 'DD/MM/YYYY',
             locale: 'pt-br',
             ignoreReadonly: true,
-            allowInputToggle: true
+            allowInputToggle: true,
+            useCurrent: false
         });
         $('#dtPickerFim').datetimepicker({
             format: 'DD/MM/YYYY',
             locale: 'pt-br',
             ignoreReadonly: true,
-            allowInputToggle: true
+            allowInputToggle: true,
+            useCurrent: false
         });
         $('#btnFiltrar').on('click', function () {
 
@@ -48,10 +50,12 @@ function initMinigameView() {
         if (getSessionUserCredentialValue('role') == "User") {
             document.getElementById('content-info').style.display = "none";
             document.getElementById('minigame-main-container').style.display = '';
+            getPacientInfo($("#pacient-select").val());
         } else if (getSessionUserCredentialValue('role') == "Administrator") {
             if ($("#pacient-select").val() != "" && $("#pacient-select").val() != undefined) {
                 document.getElementById('content-info').style.display = "none";
                 document.getElementById('minigame-main-container').style.display = '';
+                getPacientInfo($("#pacient-select").val());
             }
         }
     });
@@ -61,12 +65,45 @@ function updateMinigameView() {
     if ($("#pacient-select").val() != "") {
         document.getElementById('minigame-main-container').style.display = '';
         document.getElementById('content-info').style.display = "none";
+        refreshCommonFilters();
     }
 }
 
 function refreshCommonFilters() {
-    $('#dtPickerIni').datetimepicker(clear);
-    $('#dtPickerFim').datetimepicker(clear);
+    $('#dtPickerIni').datetimepicker('clear');
+    $('#dtPickerFim').datetimepicker('clear');
+}
+
+function getPacientInfo(paciendId){
+    $('#main-content').block({
+        message: `Carregando...`
+    });
+
+    $.ajax({
+        url: `${window.API_ENDPOINT}/pacients/${paciendId}`,
+        type: "GET",
+        dataType: "json",
+        beforeSend: function (r) {
+            r.setRequestHeader("GameToken", getSessionUserCredentialValue('gameToken'));
+        },
+        success: function (d) {
+
+            var pacientSessionDates = d.data.playSessions.map(function(element){
+                let date = new Date(element.created_at);
+                return date.toLocaleDateString('pt-br', {day: 'numeric', month:'numeric', year:'numeric'});
+            });
+            
+            $('#dtPickerIni').datetimepicker('enabledDates',pacientSessionDates);
+            $('#dtPickerFim').datetimepicker('enabledDates',pacientSessionDates);
+
+            $('#main-content').unblock();
+
+        },
+        error: function () {
+            $('#main-content').unblock();
+            alert("Ocorreu um erro ao carregar os dados. Reinicie a página e tente novamente");
+        }
+    });
 }
 
 function callAjax(userId, filterObj) {

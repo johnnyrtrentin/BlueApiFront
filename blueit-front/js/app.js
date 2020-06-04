@@ -1,4 +1,5 @@
 import Observable from './Observable.js';
+import { initHeader } from './pages/header.js';
 import { updateMinigameView } from './pages/minigames.js';
 import { updateMinigameCompareView } from './pages/minigamesComparativos.js';
 import { updateDashboardView } from './pages/dashboard.js';
@@ -14,7 +15,9 @@ window.API_ENDPOINT = "http://localhost:7071/api";
 $('#datetimepicker1').datetimepicker();
 
 $(document).ready(function () {
-    $('#modalUser').load("./shared/modalUser.html", function () { });
+    $('#modalUser').load("./shared/modalUser.html", function () { 
+        initHeader();
+    });
     $('#header').load("./shared/header.html", function () {
         var userRole = JSON.parse(sessionStorage.getItem('userCredentials')).role;
         if (userRole == "User") {

@@ -9,13 +9,15 @@ function initCalibrationView() {
             format: 'DD/MM/YYYY',
             locale: 'pt-br',
             ignoreReadonly: true,
-            allowInputToggle: true
+            allowInputToggle: true,
+            useCurrent: false
         });
         $('#dtPickerFim').datetimepicker({
             format: 'DD/MM/YYYY',
             locale: 'pt-br',
             ignoreReadonly: true,
-            allowInputToggle: true
+            allowInputToggle: true,
+            useCurrent: false
         });
         $('#btnFiltrar').on('click', function () {
 
@@ -70,8 +72,8 @@ function updateCalibrationView() {
 }
 
 function clearFiltersAndData() {
-    $('#dtPickerIni').datetimepicker(clear);
-    $('#dtPickerFim').datetimepicker(clear);
+    $('#dtPickerIni').datetimepicker('clear');
+    $('#dtPickerFim').datetimepicker('clear');
     //Limpar Highcharts
 }
 
@@ -108,6 +110,14 @@ function callAjaxCalibrationInfo(userId) {
             document.getElementById('table-calibracaoCinta-picoIns').textContent = `${d.data.capacitiesCinta.insPeakFlow} L/min`;
             document.getElementById('table-calibracaoCinta-duracaoIns').textContent = `${d.data.capacitiesCinta.insFlowDuration} seg`;
             document.getElementById('table-calibracaoCinta-frequencia').textContent = `${d.data.capacitiesCinta.respiratoryRate} rpm`;
+
+            var pacientSessionDates = d.data.playSessions.map(function(element){
+                let date = new Date(element.created_at);
+                return date.toLocaleDateString('pt-br', {day: 'numeric', month:'numeric', year:'numeric'});
+            });
+            
+            $('#dtPickerIni').datetimepicker('enabledDates',pacientSessionDates);
+            $('#dtPickerFim').datetimepicker('enabledDates',pacientSessionDates);
 
             $('#main-content').unblock();
 

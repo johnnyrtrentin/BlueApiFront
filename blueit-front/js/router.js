@@ -4,8 +4,9 @@ import { initMinigameView } from './pages/minigames.js';
 import { initDashboardView } from './pages/dashboard.js';
 import { initPlataformView } from './pages/plataforma.js';
 import { initMinigameCompareView } from './pages/minigamesComparativos.js';
-import { initCalibrationCompareView} from './pages/calibracaoComparativos.js';
-import { initPlataformCompareView} from './pages/plataformaComparativos.js';
+import { initCalibrationCompareView } from './pages/calibracaoComparativos.js';
+import { initPlataformCompareView } from './pages/plataformaComparativos.js';
+import { initToken } from './pages/token.js';
 
 page.base('/');
 
@@ -46,7 +47,7 @@ function token() {
     if (!isAuthenticated()) {
         page.redirect('/login');
     }
-    $('#main-content').load("/views/token.html");
+    $('#main-content').load("/views/token.html", initToken);
 }
 
 function notfound() {

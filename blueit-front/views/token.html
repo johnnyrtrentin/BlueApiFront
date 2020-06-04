@@ -40,58 +40,15 @@
 
   </div>
 
+  <div class="alert alert-success alert-dismissible fade show" role="alert" style="display: none;">
+    <h4 class="alert-heading">Token de Acesso gerado com sucesso!</h4>
+    <hr>
+    <p>Copie-o e coloque nas configurações dentro do jogo I BLUE IT para começar a enviar informações!</p> 
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+
 </div>
 
-<script>
-  $('[data-toggle="popover"]').popover({
-        placement: 'right',
-        delay: {
-            "hide": 100
-        }
-    });
-    $('[data-toggle="popover"]').click(function () {
-      setTimeout(function () {
-        $('.popover').fadeOut('slow');
-      }, 3000);
-
-});
-  var userToken = JSON.parse(sessionStorage.getItem('userCredentials')).gameToken;
-  var inputEl = document.getElementById('inputToken');
-  if(userToken == "")
-    inputEl.value = "Você não gerou um Token de Acesso.";
-  else{
-    inputEl.value = userToken;
-    document.getElementById('btnGenerateToken').disabled = true;
-  }
-
-  $("#btnCopyTokenToClipboard").on("click", function(e){
-    var inputToken = document.getElementById('inputToken');
-    inputToken.select();
-    inputToken.setSelectionRange(0, 99999); /*For mobile devices*/
-    /* Copy the text inside the text field */
-    document.execCommand("copy");
-  })
-
-  $("#btnGenerateToken").on("click", function(e){
-    $.ajax({
-      url: window.API_ENDPOINT + "/token",
-      data: JSON.stringify({
-        userId: JSON.parse(sessionStorage.getItem('userCredentials')).userId,
-      }),
-      type: "POST",
-      dataType: "json",
-      success: function (d) {
-          document.getElementById('inputToken').value = d.data.gameToken;
-          var userCredentials = JSON.parse(sessionStorage.getItem('userCredentials'));
-          userCredentials.gameToken = d.data.gameToken;
-          sessionStorage.setItem('userCredentials', JSON.stringify(userCredentials));
-          document.getElementById('btnGenerateToken').disabled = true;
-          window.location.pathname = '/';
-      },
-      error: function(e){
-      }
-      
-    });
-  })
-
-</script>
+<script type="module" src="./../js/pages/token.js"></script>
