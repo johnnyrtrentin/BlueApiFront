@@ -34,7 +34,7 @@ page('cadastro', cadastro);
 
 page('*', notfound);
 
-page({ decodeURLComponents: false })
+page({ decodeURLComponents: false, hashbang: true })
 
 function dashboard() {
     if (!isAuthenticated()) {
