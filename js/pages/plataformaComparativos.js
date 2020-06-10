@@ -6,12 +6,7 @@ import {
 
 function initPlataformCompareView() {
     $('#compare-filters').load("./../shared/compareFilters.html", function () {
-        let dateString = getCurrentPacient('birthday');
-        let age = getAge(dateString);
-        $("#initial-age").val(age - 3);
-        $("#final-age").val(age + 3);
-        let sex = getCurrentPacient('sex');
-        $("pacient-sex").val(sex);
+
     });
 
     $('#btnFiltrar').on('click', function () {
@@ -34,10 +29,25 @@ function initPlataformCompareView() {
     if (getSessionUserCredentialValue('role') == "User") {
         document.getElementById('content-info').style.display = "none";
         document.getElementById('plataformaComparativos-main-container').style.display = '';
+
+        let dateString = getCurrentPacient('birthday');
+        let age = getAge(dateString);
+        $("#initial-age").val(age - 3);
+        $("#final-age").val(age + 3);
+        let sex = getCurrentPacient('sex');
+        $("pacient-sex").val(sex);
+
     } else if (getSessionUserCredentialValue('role') == "Administrator") {
         if ($("#pacient-select").val() != "" && $("#pacient-select").val() != undefined) {
             document.getElementById('content-info').style.display = "none";
             document.getElementById('plataformaComparativos-main-container').style.display = '';
+
+            let dateString = getCurrentPacient('birthday');
+            let age = getAge(dateString);
+            $("#initial-age").val(age - 3);
+            $("#final-age").val(age + 3);
+            let sex = getCurrentPacient('sex');
+            $("pacient-sex").val(sex);
         }
     }
 }

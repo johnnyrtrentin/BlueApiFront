@@ -1,111 +1,109 @@
 <!DOCTYPE html>
 <html lang="en">
 
-  <head>
+<head>
 
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1,
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1,
       shrink-to-fit=no">
-    <meta name="description" content="">
-    <meta name="author" content="">
+  <meta name="description" content="">
+  <meta name="author" content="">
 
-    <title>I Blue It - Login</title>
+  <title>I Blue It - Login</title>
 
-    <!-- Custom fonts for this template-->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.0-2/js/all.min.js" rel="stylesheet" type="text/css">
-    <link
-      href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
-      rel="stylesheet">
+  <!-- Custom fonts for this template-->
+  <script src="https://kit.fontawesome.com/6798529e7f.js" crossorigin="anonymous"></script>
+  <link
+    href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
+    rel="stylesheet">
 
-    <!-- Custom styles for this template-->
-    <link href="css/sb-admin-2.css" rel="stylesheet">
+  <!-- Custom styles for this template-->
+  <link href="css/sb-admin-2.css" rel="stylesheet">
 
-    <!-- Favicon -->
-    <link rel="shortcut icon" href="img/favicon.png" />
+  <!-- Favicon -->
+  <link rel="shortcut icon" href="img/favicon.png" />
 
-  </head>
+</head>
 
-  <body class="bg-gradient-primary">
+<body class="bg-gradient-primary">
 
-    <div class="container">
+  <div class="container">
 
-      <!-- Outer Row -->
-      <div class="row justify-content-center">
+    <!-- Outer Row -->
+    <div class="row justify-content-center">
 
-        <div class="col-xl-10 col-lg-12 col-md-9">
+      <div class="col-xl-10 col-lg-12 col-md-9">
 
-          <div class="card o-hidden border-0 shadow-lg my-5">
-            <div class="card-body p-0">
-              <!-- Nested Row within Card Body -->
-              <div class="row">
-                <div class="col-lg-6 d-none d-lg-block bg-login-image"></div>
-                <div class="col-lg-6">
-                  <div class="p-5">
-                    <div class="text-center">
-                      <h1 class="h4 text-gray-900 mb-4">Bem-vindo!</h1>
+        <div class="card o-hidden border-0 shadow-lg my-5">
+          <div class="card-body p-0">
+            <!-- Nested Row within Card Body -->
+            <div class="row">
+              <div class="col-lg-6 d-none d-lg-block bg-login-image"></div>
+              <div class="col-lg-6">
+                <div class="p-5">
+                  <div class="text-center">
+                    <h1 class="h4 text-gray-900 mb-4">Bem-vindo!</h1>
+                  </div>
+                  <div id="errorForm" class="alert alert-danger" role="alert" style="visibility:hidden">
+                  </div>
+                  <form class="user" name="loginForm" method="POST">
+                    <div class="form-group">
+                      <input type="text" class="form-control
+                          form-control-user" required id="inputUsername" aria-describedby="usernameHelp"
+                        placeholder="Usuário">
                     </div>
-                    <div id="errorForm" class="alert alert-danger" role="alert"
-                      style="visibility:hidden">
+                    <div class="form-group">
+                      <input type="password" class="form-control
+                          form-control-user" required id="inputPassword" placeholder="Senha">
                     </div>
-                    <form class="user" name="loginForm" method="POST">
-                      <div class="form-group">
-                        <input type="text" class="form-control
-                          form-control-user" required id="inputUsername"
-                          aria-describedby="usernameHelp"
-                          placeholder="Usuário">
-                      </div>
-                      <div class="form-group">
-                        <input type="password" class="form-control
-                          form-control-user" required id="inputPassword"
-                          placeholder="Senha">
-                      </div>
-                      <button type="submit" class="btn btn-primary btn-user
+                    <button type="submit" class="btn btn-primary btn-user
                         btn-block">Entrar</button>
-                    </form>
-                    <hr>
-                    <div class="text-center">
-                      <a class="small" href="register.html">Criar Conta
-                        de Consulta</a>
-                    </div>
+                  </form>
+                  <hr>
+                  <div class="text-center">
+                    <a class="small" href="register.html">Criar Conta
+                      de Consulta</a>
                   </div>
                 </div>
               </div>
             </div>
           </div>
-
         </div>
 
       </div>
 
     </div>
 
-    <!-- Footer -->
-    <div id="footer"></div>
-    <!-- End of Footer -->
+  </div>
 
-    <!-- Bootstrap core JavaScript-->
-    <script src="https://code.jquery.com/jquery-3.5.1.min.js" ></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.bundle.min.js"></script>
+  <!-- Footer -->
+  <div id="footer"></div>
+  <!-- End of Footer -->
 
-    <!-- Core plugin JavaScript-->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.4.1/jquery.easing.min.js"></script>
+  <!-- Bootstrap core JavaScript-->
+  <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.bundle.min.js"></script>
 
-    <!-- Custom scripts for all pages-->
-    <script src="js/sb-admin-2.min.js"></script>
+  <!-- Core plugin JavaScript-->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.4.1/jquery.easing.min.js"></script>
 
-    <!-- Block UI-->
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery.blockUI/2.70/jquery.blockUI.min.js"></script>
+  <!-- Custom scripts for all pages-->
+  <script src="js/sb-admin-2.min.js"></script>
 
-  </body>
+  <!-- Block UI-->
+  <script type="text/javascript"
+    src="https://cdnjs.cloudflare.com/ajax/libs/jquery.blockUI/2.70/jquery.blockUI.min.js"></script>
 
-  <script>
-  $('form[name="loginForm"]').on('submit', function(e) {
+</body>
+
+<script>
+  $('form[name="loginForm"]').on('submit', function (e) {
     e.preventDefault();
-    $('.container').block({message:`Carregando...`});
+    $('.container').block({ message: `Carregando...` });
 
     $.ajax({
-      url: "https://blueapi.azurewebsites.net/api/" +  "login",
+      url: "https://blueapi.azurewebsites.net/api/" + "login",
       data: JSON.stringify({
         username: $("#inputUsername").val(),
         password: $("#inputPassword").val()
@@ -113,21 +111,22 @@
       type: "POST",
       dataType: "json",
       success: function (d) {
-          $("#errorForm").append(d.message);
-          sessionStorage.setItem('userCredentials', JSON.stringify(d.data));
-          $('.container').unblock();
-          window.location.pathname = '/';
+        $("#errorForm").append(d.message);
+        sessionStorage.setItem('userCredentials', JSON.stringify(d.data));
+        $('.container').unblock();
+        window.location.pathname = '/';
       },
-      error: function(e){
+      error: function (e) {
         var alertDiv = document.getElementById("errorForm");
         alertDiv.innerHTML = "";
         var content = document.createTextNode(e.responseJSON.message);
         alertDiv.appendChild(content);
-        document.getElementById("errorForm").style.visibility= "visible";
+        document.getElementById("errorForm").style.visibility = "visible";
         $('.container').unblock();
       }
-      
+
     });
   });
 </script>
+
 </html>

@@ -7,12 +7,7 @@ import {
 function initMinigameCompareView() {
 
     $('#compare-filters').load("./../shared/compareFilters.html", function () {
-        let dateString = getCurrentPacient('birthday');
-        let age = getAge(dateString);
-        $("#initial-age").val(age - 3);
-        $("#final-age").val(age + 3);
-        let sex = getCurrentPacient('sex');
-        $("pacient-sex").val(sex);
+
     });
 
     $('#btnFiltrar').on('click', function () {
@@ -36,10 +31,25 @@ function initMinigameCompareView() {
     if (getSessionUserCredentialValue('role') == "User") {
         document.getElementById('content-info').style.display = "none";
         document.getElementById('minigamesComparativos-main-container').style.display = '';
+
+        let dateString = getCurrentPacient('birthday');
+        let age = getAge(dateString);
+        $("#initial-age").val(age - 3);
+        $("#final-age").val(age + 3);
+        let sex = getCurrentPacient('sex');
+        $("pacient-sex").val(sex);
+        
     } else if (getSessionUserCredentialValue('role') == "Administrator") {
         if ($("#pacient-select").val() != "" && $("#pacient-select").val() != undefined) {
             document.getElementById('content-info').style.display = "none";
             document.getElementById('minigamesComparativos-main-container').style.display = '';
+
+            let dateString = getCurrentPacient('birthday');
+            let age = getAge(dateString);
+            $("#initial-age").val(age - 3);
+            $("#final-age").val(age + 3);
+            let sex = getCurrentPacient('sex');
+            $("pacient-sex").val(sex);
         }
     }
 };
@@ -132,7 +142,7 @@ function callAjaxRequest(filterObj) {
             for (let i = 0; i < flowDataPac.sessoes; i++) {
                 playerLineValues[i] = [i + 1, flowDataPac.flows[i]];
             }
-            
+
             let plotObj = {
                 title: `Dados Comparativos - Minigame [${$("#minigame-name").val() === "CakeGame" ? "Velas no Bolo" : "Copo D'Água"}]`,
                 yAxisTitleText: $("#minigame-name").val() === "CakeGame" ? "Pico Expiratório (L/min)" : "Pico Inspiratório (L/min)",
