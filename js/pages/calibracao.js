@@ -205,6 +205,35 @@ function callAjaxCalibrationHistory(userId, filterObj) {
 }
 
 function plot(plotObj) {
+
+    var data = 
+    [
+        Math.floor(Math.random() * (250 + 100 - 1)) - 100,
+        Math.floor(Math.random() * (220 + 100 - 1)) - 100,
+        Math.floor(Math.random() * (230 + 100 - 1)) - 100,
+        Math.floor(Math.random() * (210 + 100 - 1)) - 100,
+        Math.floor(Math.random() * (220 + 100 - 1)) - 100,
+        Math.floor(Math.random() * (270 + 100 - 1)) - 100,
+        Math.floor(Math.random() * (280 + 100 - 1)) - 100,
+        Math.floor(Math.random() * (290 + 100 - 1)) - 100,
+        Math.floor(Math.random() * (260 + 100 - 1)) - 100,
+        Math.floor(Math.random() * (250 + 100 - 1)) - 100
+    ]
+
+    var dates = 
+    [
+        '01/06/2020',
+        '02/06/2020',
+        '03/06/2020',
+        '04/06/2020',
+        '05/06/2020',
+        '06/06/2020',
+        '07/06/2020',
+        '08/06/2020',
+        '09/06/2020',
+        '10/06/2020',
+    ]
+
     var chart = Highcharts.chart('calibration-chart-container', {
         chart: {
             zoomType: 'xy'
@@ -213,7 +242,7 @@ function plot(plotObj) {
             text: plotObj.title
         },
         xAxis: {
-            categories: plotObj.dates,
+            categories: dates,
             tickInterval: 1,
             labels: { enabled: true }
         },
@@ -238,7 +267,7 @@ function plot(plotObj) {
             name: 'Fluxo',
             type: 'spline',
             lineWidth: 0.5,
-            data: plotObj.values,
+            data: data,
             tooltip: {
                 pointFormat: '<span style="font-weight: bold; color: {series.color}">{series.name}: {point.y:.1f}L/min  </span>'
             }

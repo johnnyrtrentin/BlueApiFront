@@ -21,8 +21,7 @@
           <div class="p-0">
             <form name="registerForm" class="user text-center border border-light p-5" method="POST">
 
-              <h1 class="h4 text-gray-900 mb-4">Conta do
-                Paciente</h1>
+              <h1 class="h4 text-gray-900 mb-4">Conta do Paciente</h1>
 
               <div class="form-group">
                 <input type="text" class="form-control form-control-user" id="inputUsername"
@@ -65,7 +64,7 @@ debugger
         username: $("#inputUsername").val(),
         password: $("#inputPassword").val(),
         role: 'User',
-        pacientId: $("#pacient-select").val(),
+        pacientId: JSON.parse($("#pacient-select").val())._id,
         gameToken: JSON.parse(sessionStorage.getItem('userCredentials')).gameToken
       }),
       type: "POST",

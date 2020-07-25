@@ -20,7 +20,7 @@ function initHeader() {
         if (role == "Administrator") {
             if (gameToken == '') {
                 document.getElementById('pacient-select_label').style.display = '';
-                document.getElementById('pacient-select-info').innerText = "Você ainda não gerou uma chave de acesso!.";
+                document.getElementById('pacient-select-info').innerText = "Você ainda não gerou um Código de Envio!.";
                 return;
             }
             setPacientsInHeader();

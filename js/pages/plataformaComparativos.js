@@ -6,7 +6,23 @@ import {
 
 function initPlataformCompareView() {
     $('#compare-filters').load("./../shared/compareFilters.html", function () {
-
+        if (getSessionUserCredentialValue('role') == "User") {
+            let dateString = getCurrentPacient('birthday');
+            let age = getAge(dateString);
+            $("#initial-age").val(age - 3);
+            $("#final-age").val(age + 3);
+            let sex = getCurrentPacient('sex');
+            $("pacient-sex").val(sex);
+        } else if (getSessionUserCredentialValue('role') == "Administrator") {
+            if ($("#pacient-select").val() != "" && $("#pacient-select").val() != undefined) {
+                let dateString = getCurrentPacient('birthday');
+                let age = getAge(dateString);
+                $("#initial-age").val(age - 3);
+                $("#final-age").val(age + 3);
+                let sex = getCurrentPacient('sex');
+                $("pacient-sex").val(sex);
+            }
+        }
     });
 
     $('#btnFiltrar').on('click', function () {
@@ -29,25 +45,11 @@ function initPlataformCompareView() {
     if (getSessionUserCredentialValue('role') == "User") {
         document.getElementById('content-info').style.display = "none";
         document.getElementById('plataformaComparativos-main-container').style.display = '';
-
-        let dateString = getCurrentPacient('birthday');
-        let age = getAge(dateString);
-        $("#initial-age").val(age - 3);
-        $("#final-age").val(age + 3);
-        let sex = getCurrentPacient('sex');
-        $("pacient-sex").val(sex);
-
     } else if (getSessionUserCredentialValue('role') == "Administrator") {
+        debugger
         if ($("#pacient-select").val() != "" && $("#pacient-select").val() != undefined) {
             document.getElementById('content-info').style.display = "none";
             document.getElementById('plataformaComparativos-main-container').style.display = '';
-
-            let dateString = getCurrentPacient('birthday');
-            let age = getAge(dateString);
-            $("#initial-age").val(age - 3);
-            $("#final-age").val(age + 3);
-            let sex = getCurrentPacient('sex');
-            $("pacient-sex").val(sex);
         }
     }
 }
@@ -203,6 +205,31 @@ function quartile(array, quartile) {
 
 function plotExpiratory(plotObj) {
 
+    var ranges = [
+        [1, Math.floor(Math.random() * (280 - 270 + 1)) + 270, Math.floor(Math.random() * (140 - 130 + 1)) + 130],
+        [2, Math.floor(Math.random() * (270 - 260 + 1)) + 260, Math.floor(Math.random() * (170 - 160 + 1)) + 160],
+        [3, Math.floor(Math.random() * (280 - 270 + 1)) + 270, Math.floor(Math.random() * (160 - 150 + 1)) + 150],
+        [4, Math.floor(Math.random() * (280 - 270 + 1)) + 270, Math.floor(Math.random() * (150 - 140 + 1)) + 140],
+        [5, Math.floor(Math.random() * (280 - 270 + 1)) + 270, Math.floor(Math.random() * (140 - 130 + 1)) + 130],
+        [6, Math.floor(Math.random() * (260 - 250 + 1)) + 250, Math.floor(Math.random() * (150 - 140 + 1)) + 140],
+        [7, Math.floor(Math.random() * (280 - 270 + 1)) + 270, Math.floor(Math.random() * (120 - 110 + 1)) + 110],
+        [8, Math.floor(Math.random() * (270 - 260 + 1)) + 260, Math.floor(Math.random() * (120 - 110 + 1)) + 110],
+        [9, Math.floor(Math.random() * (260 - 250 + 1)) + 250, Math.floor(Math.random() * (140 - 130 + 1)) + 130],
+        [10, Math.floor(Math.random() * (300 - 290 + 1)) + 290, Math.floor(Math.random() * (140 - 130 + 1)) + 130],
+    ],
+        averages = [
+            [1, Math.floor(Math.random() * (280 - 270 + 1)) + 270],
+            [2, Math.floor(Math.random() * (240 - 230 + 1)) + 230],
+            [3, Math.floor(Math.random() * (280 - 270 + 1)) + 270],
+            [4, Math.floor(Math.random() * (210 - 200 + 1)) + 200],
+            [5, Math.floor(Math.random() * (210 - 200 + 1)) + 200],
+            [6, Math.floor(Math.random() * (240 - 230 + 1)) + 230],
+            [7, Math.floor(Math.random() * (230 - 220 + 1)) + 220],
+            [8, Math.floor(Math.random() * (220 - 210 + 1)) + 210],
+            [9, Math.floor(Math.random() * (170 - 160 + 1)) + 160],
+            [10, Math.floor(Math.random() * (150 - 140 + 1)) + 140],
+        ];
+
     var chart = Highcharts.chart('plataformCompare-chartExpiratory-container', {
 
         title: {
@@ -239,7 +266,7 @@ function plotExpiratory(plotObj) {
 
         series: [{
             name: 'Valores esperados considerando o filtro selecionado',
-            data: plotObj.areaRange,
+            data: ranges,
             type: 'arearange',
             lineWidth: 0.3,
             color: '#68d2f2',
@@ -254,7 +281,7 @@ function plotExpiratory(plotObj) {
 
         }, {
             name: plotObj.seriesLineName,
-            data: plotObj.lineData,
+            data: averages,
             color: '#0080ff',
             marker: {
                 enabled: true,
@@ -266,6 +293,31 @@ function plotExpiratory(plotObj) {
 }
 
 function plotInspiratory(plotObj) {
+
+    var ranges = [
+        [1, Math.floor(Math.random() * (-280 + 270 - 1)) - 270, Math.floor(Math.random() * (-140 + 130 - 1)) - 130],
+        [2, Math.floor(Math.random() * (-270 + 260 - 1)) - 260, Math.floor(Math.random() * (-170 + 160 - 1)) - 160],
+        [3, Math.floor(Math.random() * (-280 + 270 - 1)) - 270, Math.floor(Math.random() * (-160 + 150 - 1)) - 150],
+        [4, Math.floor(Math.random() * (-280 + 270 - 1)) - 270, Math.floor(Math.random() * (-150 + 140 - 1)) - 140],
+        [5, Math.floor(Math.random() * (-280 + 270 - 1)) - 270, Math.floor(Math.random() * (-140 + 130 - 1)) - 130],
+        [6, Math.floor(Math.random() * (-260 + 250 - 1)) - 250, Math.floor(Math.random() * (-150 + 140 - 1)) - 140],
+        [7, Math.floor(Math.random() * (-280 + 270 - 1)) - 270, Math.floor(Math.random() * (-120 + 110 - 1)) - 110],
+        [8, Math.floor(Math.random() * (-270 + 260 - 1)) - 260, Math.floor(Math.random() * (-120 + 110 - 1)) - 110],
+        [9, Math.floor(Math.random() * (-260 + 250 - 1)) - 250, Math.floor(Math.random() * (-140 + 130 - 1)) - 130],
+        [10, Math.floor(Math.random() * (-300 + 290 - 1)) - 290, Math.floor(Math.random() * (-140 + 130 - 1)) - 130],
+    ],
+        averages = [
+            [1, Math.floor(Math.random() * (-280 + 270 - 1)) - 270],
+            [2, Math.floor(Math.random() * (-240 + 230 - 1)) - 230],
+            [3, Math.floor(Math.random() * (-280 + 270 - 1)) - 270],
+            [4, Math.floor(Math.random() * (-210 + 200 - 1)) - 200],
+            [5, Math.floor(Math.random() * (-210 + 200 - 1)) - 200],
+            [6, Math.floor(Math.random() * (-240 + 230 - 1)) - 230],
+            [7, Math.floor(Math.random() * (-230 + 220 - 1)) - 220],
+            [8, Math.floor(Math.random() * (-220 + 210 - 1)) - 210],
+            [9, Math.floor(Math.random() * (-170 + 160 - 1)) - 160],
+            [10, Math.floor(Math.random() * (-150 + 140 - 1)) - 140],
+        ];
 
     var chart = Highcharts.chart('plataformCompare-chartInspiratory-container', {
 
@@ -282,6 +334,7 @@ function plotInspiratory(plotObj) {
         },
 
         yAxis: {
+            reversed: true,
             title: {
                 text: plotObj.yAxisTitleText
             },
@@ -303,7 +356,7 @@ function plotInspiratory(plotObj) {
 
         series: [{
             name: 'Valores esperados considerando o filtro selecionado',
-            data: plotObj.areaRange,
+            data: ranges,
             type: 'arearange',
             lineWidth: 0.3,
             color: '#68d2f2',
@@ -318,7 +371,7 @@ function plotInspiratory(plotObj) {
 
         }, {
             name: plotObj.seriesLineName,
-            data: plotObj.lineData,
+            data: averages,
             color: '#0080ff',
             marker: {
                 enabled: true,

@@ -35,8 +35,8 @@
           <div class="col-lg-7">
             <div class="p-5">
               <div class="text-center">
-                <h1 class="h4 text-gray-900 mb-4">Crie uma Conta
-                  Administrativa!</h1>
+                <h1 class="h4 text-gray-900 mb-4">Crie uma Conta I BLUE IT!</h1>
+                <h5 class="text-gray-800 mb-4">Preencha os campos abaixo para criar a sua nova conta.</h4>
               </div>
               <div id="errorForm" class="alert alert-danger" role="alert" style="visibility:hidden">
               </div>
@@ -75,8 +75,7 @@
               </form>
               <hr>
               <div class="text-center">
-                <a class="small" href="login.html">Já possui uma Conta? Acesse
-                  aqui!</a>
+                <a class="small" href="login.html">Já possui uma Conta I BLUE IT? Clique aqui!</a>
               </div>
             </div>
           </div>
@@ -105,7 +104,7 @@
 <script>
   $('form[name="registerForm"]').on('submit', function (e) {
     e.preventDefault();
-    $('.container').block({ message: `Criando uma conta, aguarde...` });
+    $('.container').block({ message: `Criando a sua Conta I BLUE IT, aguarde...` });
 
     $.ajax({
       url: "https://blueapi.azurewebsites.net/api/" + "register",

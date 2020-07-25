@@ -19,7 +19,7 @@ function initToken() {
     var userToken = JSON.parse(sessionStorage.getItem('userCredentials')).gameToken;
     var inputEl = document.getElementById('inputToken');
     if (userToken == "")
-        inputEl.value = "Você não gerou uma Chave de Acesso.";
+        inputEl.value = "Você não gerou um Código de Envio.";
     else {
         inputEl.value = userToken;
         document.getElementById('btnGenerateToken').disabled = true;
