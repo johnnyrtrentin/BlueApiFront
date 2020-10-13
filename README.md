@@ -13,6 +13,7 @@ Esta aplicação *web* foi desenvolvida baseando-se na arquitetura SPA (Single-P
 - [JQuery 3.5.1](https://jquery.com/download/)
 - [Highcharts](https://www.highcharts.com)
 - Javascript
+- [Microsoft Static Web Apps](https://azure.microsoft.com/pt-br/services/app-service/static/)
 
 As páginas desenvolvidas utilizaram do template [SB Admin 2](https://startbootstrap.com/themes/sb-admin-2/)
 
@@ -38,4 +39,10 @@ A aplicação web utiliza uma API para busca/envio de informações (API I Blue 
 *O armazenamento de dados do usuário são armazenados em variáveis de sessão.*
 
 Para que se consiga enviar/buscar dados para a API I Blue It, por favor, verifique o seu repositório para mais informações.
+
+### Implantação
+
+Este projeto foi implantado na arquitetura da Static Web Apps da Microsoft. Esta arquitetura permite que a implantação seja automática a cada código novo inserido no repositório.
+
+Porém, a implantação pode ser feita em qualquer servidor configurado para disponibilizar o arquivo *index.html* como página estática, fazendo com que a biblioteca *page.js* lide com o roteamento.
     
