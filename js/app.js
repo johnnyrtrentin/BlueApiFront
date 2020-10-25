@@ -8,7 +8,7 @@ import { updateCalibrationCompareView } from './pages/calibracaoComparativos.js'
 import { updatePlataformView } from './pages/plataforma.js';
 import { updatePlataformCompareView } from './pages/plataformaComparativos.js';
 
-window.API_ENDPOINT = "http://localhost:7071/api";
+window.API_ENDPOINT = "https://blueapi.azurewebsites.net/api";
 
 $('#datetimepicker1').datetimepicker();
 
@@ -39,7 +39,6 @@ $(document).ready(function () {
             const selectPacientEl = document.getElementById('pacient-select');
             selectPacientEl.addEventListener('change', e => {
                 //Update current pacient
-                debugger
                 sessionStorage.setItem('currentPacient', e.target.value);
                 let pacientId = getCurrentPacient('_id');
                 changeHeaderInfo();

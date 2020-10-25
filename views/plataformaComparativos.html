@@ -54,6 +54,17 @@
                         <option value="Cinta">Cinta</option>
                     </select>
                 </div>
+                <!---          ADD 17/08, autor: Diogo            -->
+                <div class="col-auto">
+                    <label for="inlineFormCustomSelectPref">Visualização:</label>
+                    <select id="plataform-view" class="custom-select">
+                        <option selected value="expiratory_peak">Pico Expiratório</option>
+                        <option value="inspiratory_peak">Pico Inspiratório</option>
+                        <option value="score">Pontuação</option>
+                        <option value="ratio">Razão</option>
+                    </select>
+                </div>
+                <!---          ADD 17/08, autor: Diogo            -->
                 
             </div>
         </div>
@@ -66,21 +77,11 @@
 
         <div id="chartExpiratory-heading" style="display: none;">
             <div class="d-sm-flex align-items-center justify-content-between mb-4">
-                <h1 class="h5 mb-0 text-gray-800">Picos Expiratórios</h1>
             </div>
             <hr>
         </div>
 
-        <div id="plataformCompare-chartExpiratory-container" style="display: none;"></div>
-
-
-        <div id="chartInspiratory-heading" style="display: none;">
-            <div class="d-sm-flex align-items-center justify-content-between mb-4">
-                <h1 class="h5 mb-0 text-gray-800">Picos Inspiratórios</h1>
-            </div>
-            <hr>
-        </div>
-        <div id="plataformCompare-chartInspiratory-container" style="display: none;"></div>
+        <div id="plataformCompare-chart-container" style="display: none;"></div>
 
     </div>
 
