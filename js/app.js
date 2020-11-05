@@ -8,8 +8,8 @@ import { updateCalibrationCompareView } from './pages/calibracaoComparativos.js'
 import { updatePlataformView } from './pages/plataforma.js';
 import { updatePlataformCompareView } from './pages/plataformaComparativos.js';
 
-window.API_ENDPOINT = "https://blueapi.azurewebsites.net/api";
-//window.API_ENDPOINT = "https://iblueit.azurewebsites.net/api";
+//window.API_ENDPOINT = "https://blueapi.azurewebsites.net/api";
+window.API_ENDPOINT = "https://iblueit.azurewebsites.net/api";
 
 $('#datetimepicker1').datetimepicker();
 
