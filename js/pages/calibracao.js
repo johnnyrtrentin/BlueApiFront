@@ -3,6 +3,8 @@ import {
     getCurrentPacient
 } from './../app.js';
 
+import * as calibrationChart from '../chart.js';
+
 function initCalibrationView() {
 
     $('#content-filters').load("./../shared/commonFilters.html", function () {
@@ -45,8 +47,9 @@ function initCalibrationView() {
                 }
             }
             let pacientId = getSessionUserCredentialValue('role') == "Administrator" ? getCurrentPacient("_id") : getSessionUserCredentialValue('pacientId');
-            callAjaxCalibrationHistory(pacientId, filterObj);
-
+            // callAjaxCalibrationHistory(pacientId, filterObj);
+            calibrationChart.fetchChartData();
+            
         });
 
         if (getSessionUserCredentialValue('role') == "User") {
